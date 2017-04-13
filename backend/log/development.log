@@ -1,0 +1,1961 @@
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT VERSION()[0m
+  [1m[35m (20.8ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying PRIMARY KEY)[0m
+  [1m[35m (5.2ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying PRIMARY KEY, "value" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(3538794019947244905);[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to DeviseTokenAuthCreateUsers (20170411174142)
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (6.5ms)[0m  [1m[35mCREATE TABLE "users" ("id" serial primary key, "provider" character varying DEFAULT 'email' NOT NULL, "uid" character varying DEFAULT '' NOT NULL, "encrypted_password" character varying DEFAULT '' NOT NULL, "reset_password_token" character varying, "reset_password_sent_at" timestamp, "remember_created_at" timestamp, "sign_in_count" integer DEFAULT 0 NOT NULL, "current_sign_in_at" timestamp, "last_sign_in_at" timestamp, "current_sign_in_ip" character varying, "last_sign_in_ip" character varying, "confirmation_token" character varying, "confirmed_at" timestamp, "confirmation_sent_at" timestamp, "unconfirmed_email" character varying, "name" character varying, "nickname" character varying, "image" character varying, "email" character varying, "tokens" json, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (1.4ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_email" ON "users"  ("email")[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_uid_and_provider" ON "users"  ("uid", "provider")[0m
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_reset_password_token" ON "users"  ("reset_password_token")[0m
+  [1m[35m (1.4ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_confirmation_token" ON "users"  ("confirmation_token")[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20170411174142"]]
+  [1m[35m (9.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (1.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "development"], ["created_at", 2017-04-11 17:57:35 UTC], ["updated_at", 2017-04-11 17:57:35 UTC]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_advisory_unlock(3538794019947244905)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (2.0ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" WHERE "users"."provider" = $1 AND "users"."email" = $2[0m  [["provider", "email"], ["email", "user@example.com"]]
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "users" ("uid", "encrypted_password", "confirmation_token", "confirmation_sent_at", "name", "nickname", "email", "tokens", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["uid", "user@example.com"], ["encrypted_password", "$2a$10$b9npLK7KT4Fdm8LKk.Wk/eiaJcvcr7dXBA022MRUSfbOVpkykOXoS"], ["confirmation_token", "oe7mizfpKcGS26VHvVB9"], ["confirmation_sent_at", 2017-04-11 17:57:43 UTC], ["name", "User One"], ["nickname", "UOne"], ["email", "user@example.com"], ["tokens", "{}"], ["created_at", 2017-04-11 17:57:43 UTC], ["updated_at", 2017-04-11 17:57:43 UTC]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-11 20:32:39 +0200
+  [1m[36mActiveRecord::SchemaMigration Load (4.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by DeviseTokenAuth::SessionsController#create as */*
+  Parameters: {"email"=>"user@example.com", "password"=>"[FILTERED]"}
+  [1m[36mUser Load (1.6ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'user@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Completed 401 Unauthorized in 162ms (Views: 0.3ms | ActiveRecord: 4.7ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-11 20:36:51 +0200
+Processing by DeviseTokenAuth::SessionsController#create as */*
+  Parameters: {"email"=>"user@example.com", "password"=>"[FILTERED]"}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'user@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Completed 401 Unauthorized in 2ms (Views: 0.1ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-11 20:50:27 +0200
+Processing by DeviseTokenAuth::SessionsController#create as */*
+  Parameters: {"email"=>"user@example.com", "password"=>"[FILTERED]"}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'user@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Completed 401 Unauthorized in 2ms (Views: 0.1ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-11 20:50:30 +0200
+Processing by DeviseTokenAuth::SessionsController#create as */*
+  Parameters: {"email"=>"user@example.com", "password"=>"[FILTERED]"}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'user@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Completed 401 Unauthorized in 2ms (Views: 0.1ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-11 20:50:44 +0200
+Processing by DeviseTokenAuth::SessionsController#create as */*
+  Parameters: {"email"=>"user@example.com", "password"=>"[FILTERED]"}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'user@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Completed 401 Unauthorized in 2ms (Views: 0.1ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-11 20:51:31 +0200
+Processing by DeviseTokenAuth::SessionsController#create as */*
+Completed 401 Unauthorized in 0ms (Views: 0.1ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-11 20:51:41 +0200
+Processing by DeviseTokenAuth::SessionsController#create as */*
+  Parameters: {"------WebKitFormBoundaryyPjMyOEiWNr0Olg6\r\nContent-Disposition: form-data; name"=>"\"email\"\r\n\r\nuser@example.com\r\n------WebKitFormBoundaryyPjMyOEiWNr0Olg6\r\nContent-Disposition: form-data; name=\"password\"\r\n\r\nmonkey67\r\n------WebKitFormBoundaryyPjMyOEiWNr0Olg6--\r\n"}
+Unpermitted parameter: ------WebKitFormBoundaryyPjMyOEiWNr0Olg6
+Content-Disposition: form-data; name
+Completed 401 Unauthorized in 0ms (Views: 0.1ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-11 20:51:54 +0200
+Processing by DeviseTokenAuth::SessionsController#create as */*
+  Parameters: {"------WebKitFormBoundaryA3l7wPrzkB0fwvLo\r\nContent-Disposition: form-data; name"=>"\"email\"\r\n\r\nuser@example.com\r\n------WebKitFormBoundaryA3l7wPrzkB0fwvLo\r\nContent-Disposition: form-data; name=\"password\"\r\n\r\nmonkey67\r\n------WebKitFormBoundaryA3l7wPrzkB0fwvLo--\r\n"}
+Unpermitted parameter: ------WebKitFormBoundaryA3l7wPrzkB0fwvLo
+Content-Disposition: form-data; name
+Completed 401 Unauthorized in 0ms (Views: 0.1ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-11 20:52:02 +0200
+Processing by DeviseTokenAuth::SessionsController#create as */*
+  Parameters: {"email"=>"user@example.com", "password"=>"[FILTERED]"}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'user@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Completed 401 Unauthorized in 2ms (Views: 0.2ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-11 21:01:23 +0200
+Processing by DeviseTokenAuth::SessionsController#create as */*
+  Parameters: {"email"=>"user@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"user@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'user@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Completed 401 Unauthorized in 3ms (Views: 0.1ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-11 21:09:18 +0200
+Processing by DeviseTokenAuth::SessionsController#create as */*
+  Parameters: {"email"=>"user@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"user@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'user@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Completed 401 Unauthorized in 27ms (Views: 0.1ms | ActiveRecord: 4.0ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-11 21:09:50 +0200
+Processing by DeviseTokenAuth::SessionsController#create as */*
+  Parameters: {"email"=>"user@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"user@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'user@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Completed 401 Unauthorized in 2ms (Views: 0.1ms | ActiveRecord: 0.5ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-11 21:10:17 +0200
+  [1m[36mActiveRecord::SchemaMigration Load (4.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by DeviseTokenAuth::SessionsController#create as */*
+  Parameters: {"email"=>"user@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"user@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'user@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Completed 401 Unauthorized in 56ms (Views: 0.2ms | ActiveRecord: 4.1ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-11 21:10:32 +0200
+  [1m[36mActiveRecord::SchemaMigration Load (1.7ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by DeviseTokenAuth::SessionsController#create as */*
+  Parameters: {"email"=>"user@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"user@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'user@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Completed 401 Unauthorized in 55ms (Views: 0.2ms | ActiveRecord: 2.3ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-11 21:31:01 +0200
+Processing by DeviseTokenAuth::SessionsController#create as */*
+Completed 401 Unauthorized in 0ms (Views: 0.1ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-11 21:31:15 +0200
+Processing by DeviseTokenAuth::SessionsController#create as */*
+Completed 401 Unauthorized in 0ms (Views: 0.1ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-11 21:31:27 +0200
+Processing by DeviseTokenAuth::SessionsController#create as */*
+  Parameters: {"email"=>"user@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"user@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'user@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Completed 401 Unauthorized in 2ms (Views: 0.1ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-11 21:31:38 +0200
+Processing by DeviseTokenAuth::SessionsController#create as */*
+  Parameters: {"email"=>"user@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"user@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'user@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Completed 401 Unauthorized in 2ms (Views: 0.1ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-11 21:38:32 +0200
+Processing by DeviseTokenAuth::SessionsController#create as */*
+  Parameters: {"email"=>"user@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"user@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'user@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Completed 401 Unauthorized in 3ms (Views: 0.2ms | ActiveRecord: 0.9ms)
+
+
+Started POST "/auth/sign_in/" for 127.0.0.1 at 2017-04-11 21:38:38 +0200
+Processing by DeviseTokenAuth::SessionsController#create as */*
+  Parameters: {"email"=>"user@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"user@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'user@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Completed 401 Unauthorized in 2ms (Views: 0.1ms | ActiveRecord: 0.4ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-04-11 21:49:22 +0200
+Processing by Rails::WelcomeController#index as HTML
+  Parameters: {"internal"=>true}
+  Rendering /home/work/.rvm/gems/ruby-2.4.0/gems/railties-5.0.2/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /home/work/.rvm/gems/ruby-2.4.0/gems/railties-5.0.2/lib/rails/templates/rails/welcome/index.html.erb (6.6ms)
+Completed 200 OK in 70ms (Views: 53.2ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/favicon.ico" for 127.0.0.1 at 2017-04-11 21:49:22 +0200
+  
+ActionController::RoutingError (No route matches [GET] "/favicon.ico"):
+  
+actionpack (5.0.2) lib/action_dispatch/middleware/debug_exceptions.rb:53:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.2) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.2) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.2) lib/rails/engine.rb:522:in `call'
+puma (3.8.2) lib/puma/configuration.rb:224:in `call'
+puma (3.8.2) lib/puma/server.rb:600:in `handle_request'
+puma (3.8.2) lib/puma/server.rb:435:in `process_client'
+puma (3.8.2) lib/puma/server.rb:299:in `block in run'
+puma (3.8.2) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+Started GET "/auth/sign_in" for 127.0.0.1 at 2017-04-11 21:49:39 +0200
+Processing by DeviseTokenAuth::SessionsController#new as HTML
+Completed 405 Method Not Allowed in 0ms (Views: 0.2ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-04-11 21:50:00 +0200
+Processing by Rails::WelcomeController#index as HTML
+  Parameters: {"internal"=>true}
+  Rendering /home/work/.rvm/gems/ruby-2.4.0/gems/railties-5.0.2/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /home/work/.rvm/gems/ruby-2.4.0/gems/railties-5.0.2/lib/rails/templates/rails/welcome/index.html.erb (1.3ms)
+Completed 200 OK in 4ms (Views: 3.3ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/routes" for 127.0.0.1 at 2017-04-11 21:50:05 +0200
+  
+ActionController::RoutingError (No route matches [GET] "/routes"):
+  
+actionpack (5.0.2) lib/action_dispatch/middleware/debug_exceptions.rb:53:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.2) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.2) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.2) lib/rails/engine.rb:522:in `call'
+puma (3.8.2) lib/puma/configuration.rb:224:in `call'
+puma (3.8.2) lib/puma/server.rb:600:in `handle_request'
+puma (3.8.2) lib/puma/server.rb:435:in `process_client'
+puma (3.8.2) lib/puma/server.rb:299:in `block in run'
+puma (3.8.2) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+Started POST "/auth/sign_up" for 127.0.0.1 at 2017-04-11 21:50:45 +0200
+  
+ActionController::RoutingError (No route matches [POST] "/auth/sign_up"):
+  
+actionpack (5.0.2) lib/action_dispatch/middleware/debug_exceptions.rb:53:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.2) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.2) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.2) lib/rails/engine.rb:522:in `call'
+puma (3.8.2) lib/puma/configuration.rb:224:in `call'
+puma (3.8.2) lib/puma/server.rb:600:in `handle_request'
+puma (3.8.2) lib/puma/server.rb:435:in `process_client'
+puma (3.8.2) lib/puma/server.rb:299:in `block in run'
+puma (3.8.2) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+Started GET "/auth/sign_in" for 127.0.0.1 at 2017-04-11 21:51:07 +0200
+Processing by DeviseTokenAuth::SessionsController#new as */*
+  Parameters: {"session"=>{}}
+Completed 405 Method Not Allowed in 0ms (Views: 0.1ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-11 21:51:13 +0200
+Processing by DeviseTokenAuth::SessionsController#create as */*
+  Parameters: {"email"=>"user@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"user@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'user@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Completed 401 Unauthorized in 2ms (Views: 0.1ms | ActiveRecord: 0.4ms)
+
+
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" WHERE "users"."provider" = $1 AND "users"."email" = $2[0m  [["provider", "email"], ["email", "user@example.com"]]
+  [1m[35m (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" WHERE "users"."provider" = $1 AND "users"."email" = $2[0m  [["provider", "email"], ["email", "aaa@example.com"]]
+  [1m[35m (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::SchemaMigration Load (1.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", :environment]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", :environment]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", :environment]]
+  [1m[35m (133.5ms)[0m  [1m[35mDROP DATABASE IF EXISTS "rails_devise_token_auth_development"[0m
+  [1m[35m (103.8ms)[0m  [1m[35mDROP DATABASE IF EXISTS "rails_devise_token_auth_test"[0m
+  [1m[35m (30.9ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying PRIMARY KEY)[0m
+  [1m[35m (23.9ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying PRIMARY KEY, "value" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_try_advisory_lock(3538794019947244905);[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to DeviseTokenAuthCreateUsers (20170411174142)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (5.0ms)[0m  [1m[35mCREATE TABLE "users" ("id" serial primary key, "provider" character varying DEFAULT 'email' NOT NULL, "uid" character varying DEFAULT '' NOT NULL, "encrypted_password" character varying DEFAULT '' NOT NULL, "reset_password_token" character varying, "reset_password_sent_at" timestamp, "remember_created_at" timestamp, "sign_in_count" integer DEFAULT 0 NOT NULL, "current_sign_in_at" timestamp, "last_sign_in_at" timestamp, "current_sign_in_ip" character varying, "last_sign_in_ip" character varying, "confirmation_token" character varying, "confirmed_at" timestamp, "confirmation_sent_at" timestamp, "unconfirmed_email" character varying, "name" character varying, "nickname" character varying, "image" character varying, "email" character varying, "tokens" json, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (1.6ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_email" ON "users"  ("email")[0m
+  [1m[35m (2.3ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_uid_and_provider" ON "users"  ("uid", "provider")[0m
+  [1m[35m (1.6ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_reset_password_token" ON "users"  ("reset_password_token")[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_confirmation_token" ON "users"  ("confirmation_token")[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20170411174142"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "development"], ["created_at", 2017-04-11 19:58:42 UTC], ["updated_at", 2017-04-11 19:58:42 UTC]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.8ms)[0m  [1m[34mSELECT pg_advisory_unlock(3538794019947244905)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", :environment]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", :environment]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", :environment]]
+  [1m[35mSQL (0.2ms)[0m  [1m[35mCREATE EXTENSION IF NOT EXISTS "plpgsql"[0m
+  [1m[35m (24.6ms)[0m  [1m[35mDROP TABLE "users" CASCADE[0m
+  [1m[35m (18.1ms)[0m  [1m[35mCREATE TABLE "users" ("id" serial primary key, "provider" character varying DEFAULT 'email' NOT NULL, "uid" character varying DEFAULT '' NOT NULL, "encrypted_password" character varying DEFAULT '' NOT NULL, "reset_password_token" character varying, "reset_password_sent_at" timestamp, "remember_created_at" timestamp, "sign_in_count" integer DEFAULT 0 NOT NULL, "current_sign_in_at" timestamp, "last_sign_in_at" timestamp, "current_sign_in_ip" character varying, "last_sign_in_ip" character varying, "confirmation_token" character varying, "confirmed_at" timestamp, "confirmation_sent_at" timestamp, "unconfirmed_email" character varying, "name" character varying, "nickname" character varying, "image" character varying, "email" character varying, "tokens" json, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (2.5ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_confirmation_token" ON "users" USING btree ("confirmation_token")[0m
+  [1m[35m (4.1ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_email" ON "users" USING btree ("email")[0m
+  [1m[35m (4.2ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_reset_password_token" ON "users" USING btree ("reset_password_token")[0m
+  [1m[35m (2.2ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_uid_and_provider" ON "users" USING btree ("uid", "provider")[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT version FROM "schema_migrations"[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[35mCREATE EXTENSION IF NOT EXISTS "plpgsql"[0m
+  [1m[35m (10.8ms)[0m  [1m[35mCREATE TABLE "users" ("id" serial primary key, "provider" character varying DEFAULT 'email' NOT NULL, "uid" character varying DEFAULT '' NOT NULL, "encrypted_password" character varying DEFAULT '' NOT NULL, "reset_password_token" character varying, "reset_password_sent_at" timestamp, "remember_created_at" timestamp, "sign_in_count" integer DEFAULT 0 NOT NULL, "current_sign_in_at" timestamp, "last_sign_in_at" timestamp, "current_sign_in_ip" character varying, "last_sign_in_ip" character varying, "confirmation_token" character varying, "confirmed_at" timestamp, "confirmation_sent_at" timestamp, "unconfirmed_email" character varying, "name" character varying, "nickname" character varying, "image" character varying, "email" character varying, "tokens" json, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (2.7ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_confirmation_token" ON "users" USING btree ("confirmation_token")[0m
+  [1m[35m (2.0ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_email" ON "users" USING btree ("email")[0m
+  [1m[35m (2.1ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_reset_password_token" ON "users" USING btree ("reset_password_token")[0m
+  [1m[35m (1.9ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_uid_and_provider" ON "users" USING btree ("uid", "provider")[0m
+  [1m[35m (3.6ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying PRIMARY KEY)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT version FROM "schema_migrations"[0m
+  [1m[35m (0.7ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20170411174142)[0m
+  [1m[35m (3.8ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying PRIMARY KEY, "value" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "development"], ["created_at", 2017-04-11 19:58:43 UTC], ["updated_at", 2017-04-11 19:58:43 UTC]]
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::SchemaMigration Load (2.0ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.8ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" WHERE "users"."provider" = $1 AND "users"."email" = $2[0m  [["provider", "email"], ["email", "aaa@example.com"]]
+  [1m[35m (0.5ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", :environment]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", :environment]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", :environment]]
+  [1m[35m (5024.1ms)[0m  [1m[35mDROP DATABASE IF EXISTS "rails_devise_token_auth_development"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", :environment]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", :environment]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", :environment]]
+  [1m[35m (115.5ms)[0m  [1m[35mDROP DATABASE IF EXISTS "rails_devise_token_auth_development"[0m
+  [1m[35m (104.1ms)[0m  [1m[35mDROP DATABASE IF EXISTS "rails_devise_token_auth_test"[0m
+  [1m[35m (5.8ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying PRIMARY KEY)[0m
+  [1m[35m (4.1ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying PRIMARY KEY, "value" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(3538794019947244905);[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to DeviseTokenAuthCreateUsers (20170411174142)
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (18.4ms)[0m  [1m[35mCREATE TABLE "users" ("id" serial primary key, "provider" character varying DEFAULT 'email' NOT NULL, "uid" character varying DEFAULT '' NOT NULL, "encrypted_password" character varying DEFAULT '' NOT NULL, "reset_password_token" character varying, "reset_password_sent_at" timestamp, "remember_created_at" timestamp, "sign_in_count" integer DEFAULT 0 NOT NULL, "current_sign_in_at" timestamp, "last_sign_in_at" timestamp, "current_sign_in_ip" character varying, "last_sign_in_ip" character varying, "confirmation_token" character varying, "confirmed_at" timestamp, "confirmation_sent_at" timestamp, "unconfirmed_email" character varying, "name" character varying, "nickname" character varying, "image" character varying, "email" character varying, "tokens" json, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (1.4ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_email" ON "users"  ("email")[0m
+  [1m[35m (1.4ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_uid_and_provider" ON "users"  ("uid", "provider")[0m
+  [1m[35m (2.3ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_reset_password_token" ON "users"  ("reset_password_token")[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_confirmation_token" ON "users"  ("confirmation_token")[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20170411174142"]]
+  [1m[35m (6.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (1.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (2.4ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "development"], ["created_at", 2017-04-11 20:01:49 UTC], ["updated_at", 2017-04-11 20:01:49 UTC]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(3538794019947244905)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (3.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" WHERE "users"."provider" = $1 AND "users"."email" = $2[0m  [["provider", "email"], ["email", "aaa@example.com"]]
+  [1m[35mSQL (7.9ms)[0m  [1m[32mINSERT INTO "users" ("uid", "encrypted_password", "confirmation_token", "confirmation_sent_at", "name", "nickname", "email", "tokens", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["uid", "aaa@example.com"], ["encrypted_password", "$2a$10$VhYMYk.u5NujgB2YTCONueMQWmtDNr.XzswPQCwEpMzBL/G1YZV6m"], ["confirmation_token", "4bDT_YrM75egdSVGpNqs"], ["confirmation_sent_at", 2017-04-11 20:01:49 UTC], ["name", "User One"], ["nickname", "UOne"], ["email", "aaa@example.com"], ["tokens", "\"{}\""], ["created_at", 2017-04-11 20:01:49 UTC], ["updated_at", 2017-04-11 20:01:49 UTC]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-11 22:03:27 +0200
+  [1m[36mActiveRecord::SchemaMigration Load (4.9ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by DeviseTokenAuth::SessionsController#create as */*
+  Parameters: {"email"=>"user@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"user@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (1.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'user@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Completed 401 Unauthorized in 30ms (Views: 0.2ms | ActiveRecord: 3.0ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-11 22:03:32 +0200
+Processing by DeviseTokenAuth::SessionsController#create as */*
+  Parameters: {"email"=>"user@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"user@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'user@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Completed 401 Unauthorized in 2ms (Views: 0.1ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-11 22:03:57 +0200
+Processing by DeviseTokenAuth::SessionsController#create as */*
+  Parameters: {"email"=>"aaa@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"aaa@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'aaa@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Completed 401 Unauthorized in 34ms (Views: 0.1ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-11 22:29:50 +0200
+  [1m[36mActiveRecord::SchemaMigration Load (2.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by DeviseTokenAuth::SessionsController#create as */*
+  Parameters: {"email"=>"aaa@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"aaa@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'aaa@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Completed 401 Unauthorized in 64ms (Views: 0.2ms | ActiveRecord: 2.4ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-11 22:30:03 +0200
+Error occurred while parsing request parameters.
+Contents:
+
+{
+  "email": "aaa@example.com",
+  "password": "asdfasdf",
+  
+}
+  
+ActionDispatch::ParamsParser::ParseError (743: unexpected token at '{
+  "email": "aaa@example.com",
+  "password": "asdfasdf",
+  
+}'):
+  
+actionpack (5.0.2) lib/action_dispatch/http/parameters.rb:88:in `rescue in parse_formatted_parameters'
+actionpack (5.0.2) lib/action_dispatch/http/parameters.rb:82:in `parse_formatted_parameters'
+actionpack (5.0.2) lib/action_dispatch/http/request.rb:354:in `block in POST'
+rack (2.0.1) lib/rack/request.rb:57:in `fetch'
+rack (2.0.1) lib/rack/request.rb:57:in `fetch_header'
+actionpack (5.0.2) lib/action_dispatch/http/request.rb:353:in `POST'
+actionpack (5.0.2) lib/action_controller/metal/params_wrapper.rb:282:in `_wrapper_enabled?'
+actionpack (5.0.2) lib/action_controller/metal/params_wrapper.rb:231:in `process_action'
+activerecord (5.0.2) lib/active_record/railties/controller_runtime.rb:18:in `process_action'
+actionpack (5.0.2) lib/abstract_controller/base.rb:126:in `process'
+actionpack (5.0.2) lib/action_controller/metal.rb:190:in `dispatch'
+actionpack (5.0.2) lib/action_controller/metal.rb:262:in `dispatch'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:50:in `dispatch'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:32:in `serve'
+actionpack (5.0.2) lib/action_dispatch/routing/mapper.rb:16:in `block in <class:Constraints>'
+actionpack (5.0.2) lib/action_dispatch/routing/mapper.rb:46:in `serve'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:39:in `block in serve'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:26:in `each'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:26:in `serve'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:725:in `call'
+rack-cors (0.4.1) lib/rack/cors.rb:81:in `call'
+warden (1.2.7) lib/warden/manager.rb:36:in `block in call'
+warden (1.2.7) lib/warden/manager.rb:35:in `catch'
+warden (1.2.7) lib/warden/manager.rb:35:in `call'
+rack (2.0.1) lib/rack/etag.rb:25:in `call'
+rack (2.0.1) lib/rack/conditional_get.rb:38:in `call'
+rack (2.0.1) lib/rack/head.rb:12:in `call'
+activerecord (5.0.2) lib/active_record/migration.rb:553:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/callbacks.rb:38:in `block in call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:97:in `__run_callbacks__'
+activesupport (5.0.2) lib/active_support/callbacks.rb:750:in `_run_call_callbacks'
+activesupport (5.0.2) lib/active_support/callbacks.rb:90:in `run_callbacks'
+actionpack (5.0.2) lib/action_dispatch/middleware/callbacks.rb:36:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/debug_exceptions.rb:49:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.2) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.2) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.2) lib/rails/engine.rb:522:in `call'
+puma (3.8.2) lib/puma/configuration.rb:224:in `call'
+puma (3.8.2) lib/puma/server.rb:600:in `handle_request'
+puma (3.8.2) lib/puma/server.rb:435:in `process_client'
+puma (3.8.2) lib/puma/server.rb:299:in `block in run'
+puma (3.8.2) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-11 22:30:13 +0200
+Processing by DeviseTokenAuth::SessionsController#create as */*
+  Parameters: {"email"=>"aaa@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"aaa@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (1.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'aaa@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Completed 401 Unauthorized in 4ms (Views: 0.1ms | ActiveRecord: 1.4ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-12 10:15:59 +0200
+  [1m[36mActiveRecord::SchemaMigration Load (3.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by DeviseTokenAuth::SessionsController#create as */*
+  Parameters: {"email"=>"aaa@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"aaa@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (15.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'aaa@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Completed 401 Unauthorized in 99ms (Views: 0.2ms | ActiveRecord: 17.3ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-04-12 18:56:36 +0200
+  [1m[36mActiveRecord::SchemaMigration Load (28.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by Rails::WelcomeController#index as HTML
+  Parameters: {"internal"=>true}
+  Rendering /home/work/.rvm/gems/ruby-2.4.0/gems/railties-5.0.2/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /home/work/.rvm/gems/ruby-2.4.0/gems/railties-5.0.2/lib/rails/templates/rails/welcome/index.html.erb (3.4ms)
+Completed 200 OK in 11ms (Views: 7.6ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/favicon.ico" for 127.0.0.1 at 2017-04-12 18:56:36 +0200
+  
+ActionController::RoutingError (No route matches [GET] "/favicon.ico"):
+  
+actionpack (5.0.2) lib/action_dispatch/middleware/debug_exceptions.rb:53:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.2) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.2) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.2) lib/rails/engine.rb:522:in `call'
+puma (3.8.2) lib/puma/configuration.rb:224:in `call'
+puma (3.8.2) lib/puma/server.rb:600:in `handle_request'
+puma (3.8.2) lib/puma/server.rb:435:in `process_client'
+puma (3.8.2) lib/puma/server.rb:299:in `block in run'
+puma (3.8.2) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+Started OPTIONS "/auth/sign_in" for 127.0.0.1 at 2017-04-12 18:56:40 +0200
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-12 18:56:41 +0200
+Processing by DeviseTokenAuth::SessionsController#create as JSON
+  Parameters: {"email"=>"aaa@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"aaa@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (18.6ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'aaa@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Completed 401 Unauthorized in 182ms (Views: 0.2ms | ActiveRecord: 87.5ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-12 19:03:55 +0200
+Processing by DeviseTokenAuth::SessionsController#create as JSON
+  Parameters: {"email"=>"aaa@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"aaa@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'aaa@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Completed 401 Unauthorized in 4ms (Views: 0.1ms | ActiveRecord: 0.4ms)
+
+
+Started OPTIONS "/auth/sign_in" for 127.0.0.1 at 2017-04-12 19:07:32 +0200
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-12 19:07:42 +0200
+Processing by DeviseTokenAuth::SessionsController#create as JSON
+  Parameters: {"email"=>"aaa@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"aaa@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'aaa@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Unpermitted parameter: session
+Completed 500 Internal Server Error in 259ms (ActiveRecord: 2.7ms)
+
+
+  
+IndexError (string not matched):
+  
+devise_token_auth (0.1.40) app/controllers/devise_token_auth/sessions_controller.rb:42:in `[]='
+devise_token_auth (0.1.40) app/controllers/devise_token_auth/sessions_controller.rb:42:in `create'
+actionpack (5.0.2) lib/action_controller/metal/basic_implicit_render.rb:4:in `send_action'
+actionpack (5.0.2) lib/abstract_controller/base.rb:188:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/rendering.rb:30:in `process_action'
+actionpack (5.0.2) lib/abstract_controller/callbacks.rb:20:in `block in process_action'
+activesupport (5.0.2) lib/active_support/callbacks.rb:126:in `call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:506:in `block (2 levels) in compile'
+activesupport (5.0.2) lib/active_support/callbacks.rb:455:in `call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:101:in `__run_callbacks__'
+activesupport (5.0.2) lib/active_support/callbacks.rb:750:in `_run_process_action_callbacks'
+activesupport (5.0.2) lib/active_support/callbacks.rb:90:in `run_callbacks'
+actionpack (5.0.2) lib/abstract_controller/callbacks.rb:19:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/rescue.rb:20:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/instrumentation.rb:32:in `block in process_action'
+activesupport (5.0.2) lib/active_support/notifications.rb:164:in `block in instrument'
+activesupport (5.0.2) lib/active_support/notifications/instrumenter.rb:21:in `instrument'
+activesupport (5.0.2) lib/active_support/notifications.rb:164:in `instrument'
+actionpack (5.0.2) lib/action_controller/metal/instrumentation.rb:30:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/params_wrapper.rb:248:in `process_action'
+activerecord (5.0.2) lib/active_record/railties/controller_runtime.rb:18:in `process_action'
+actionpack (5.0.2) lib/abstract_controller/base.rb:126:in `process'
+actionpack (5.0.2) lib/action_controller/metal.rb:190:in `dispatch'
+actionpack (5.0.2) lib/action_controller/metal.rb:262:in `dispatch'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:50:in `dispatch'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:32:in `serve'
+actionpack (5.0.2) lib/action_dispatch/routing/mapper.rb:16:in `block in <class:Constraints>'
+actionpack (5.0.2) lib/action_dispatch/routing/mapper.rb:46:in `serve'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:39:in `block in serve'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:26:in `each'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:26:in `serve'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:725:in `call'
+rack-cors (0.4.1) lib/rack/cors.rb:81:in `call'
+warden (1.2.7) lib/warden/manager.rb:36:in `block in call'
+warden (1.2.7) lib/warden/manager.rb:35:in `catch'
+warden (1.2.7) lib/warden/manager.rb:35:in `call'
+rack (2.0.1) lib/rack/etag.rb:25:in `call'
+rack (2.0.1) lib/rack/conditional_get.rb:38:in `call'
+rack (2.0.1) lib/rack/head.rb:12:in `call'
+activerecord (5.0.2) lib/active_record/migration.rb:553:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/callbacks.rb:38:in `block in call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:97:in `__run_callbacks__'
+activesupport (5.0.2) lib/active_support/callbacks.rb:750:in `_run_call_callbacks'
+activesupport (5.0.2) lib/active_support/callbacks.rb:90:in `run_callbacks'
+actionpack (5.0.2) lib/action_dispatch/middleware/callbacks.rb:36:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/debug_exceptions.rb:49:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.2) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.2) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.2) lib/rails/engine.rb:522:in `call'
+puma (3.8.2) lib/puma/configuration.rb:224:in `call'
+puma (3.8.2) lib/puma/server.rb:600:in `handle_request'
+puma (3.8.2) lib/puma/server.rb:435:in `process_client'
+puma (3.8.2) lib/puma/server.rb:299:in `block in run'
+puma (3.8.2) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-12 19:14:30 +0200
+Processing by DeviseTokenAuth::SessionsController#create as JSON
+  Parameters: {"email"=>"aaa@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"aaa@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'aaa@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Unpermitted parameter: session
+Completed 500 Internal Server Error in 271ms (ActiveRecord: 0.9ms)
+
+
+  
+IndexError (string not matched):
+  
+devise_token_auth (0.1.40) app/controllers/devise_token_auth/sessions_controller.rb:42:in `[]='
+devise_token_auth (0.1.40) app/controllers/devise_token_auth/sessions_controller.rb:42:in `create'
+actionpack (5.0.2) lib/action_controller/metal/basic_implicit_render.rb:4:in `send_action'
+actionpack (5.0.2) lib/abstract_controller/base.rb:188:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/rendering.rb:30:in `process_action'
+actionpack (5.0.2) lib/abstract_controller/callbacks.rb:20:in `block in process_action'
+activesupport (5.0.2) lib/active_support/callbacks.rb:126:in `call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:506:in `block (2 levels) in compile'
+activesupport (5.0.2) lib/active_support/callbacks.rb:455:in `call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:101:in `__run_callbacks__'
+activesupport (5.0.2) lib/active_support/callbacks.rb:750:in `_run_process_action_callbacks'
+activesupport (5.0.2) lib/active_support/callbacks.rb:90:in `run_callbacks'
+actionpack (5.0.2) lib/abstract_controller/callbacks.rb:19:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/rescue.rb:20:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/instrumentation.rb:32:in `block in process_action'
+activesupport (5.0.2) lib/active_support/notifications.rb:164:in `block in instrument'
+activesupport (5.0.2) lib/active_support/notifications/instrumenter.rb:21:in `instrument'
+activesupport (5.0.2) lib/active_support/notifications.rb:164:in `instrument'
+actionpack (5.0.2) lib/action_controller/metal/instrumentation.rb:30:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/params_wrapper.rb:248:in `process_action'
+activerecord (5.0.2) lib/active_record/railties/controller_runtime.rb:18:in `process_action'
+actionpack (5.0.2) lib/abstract_controller/base.rb:126:in `process'
+actionpack (5.0.2) lib/action_controller/metal.rb:190:in `dispatch'
+actionpack (5.0.2) lib/action_controller/metal.rb:262:in `dispatch'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:50:in `dispatch'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:32:in `serve'
+actionpack (5.0.2) lib/action_dispatch/routing/mapper.rb:16:in `block in <class:Constraints>'
+actionpack (5.0.2) lib/action_dispatch/routing/mapper.rb:46:in `serve'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:39:in `block in serve'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:26:in `each'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:26:in `serve'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:725:in `call'
+rack-cors (0.4.1) lib/rack/cors.rb:81:in `call'
+warden (1.2.7) lib/warden/manager.rb:36:in `block in call'
+warden (1.2.7) lib/warden/manager.rb:35:in `catch'
+warden (1.2.7) lib/warden/manager.rb:35:in `call'
+rack (2.0.1) lib/rack/etag.rb:25:in `call'
+rack (2.0.1) lib/rack/conditional_get.rb:38:in `call'
+rack (2.0.1) lib/rack/head.rb:12:in `call'
+activerecord (5.0.2) lib/active_record/migration.rb:553:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/callbacks.rb:38:in `block in call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:97:in `__run_callbacks__'
+activesupport (5.0.2) lib/active_support/callbacks.rb:750:in `_run_call_callbacks'
+activesupport (5.0.2) lib/active_support/callbacks.rb:90:in `run_callbacks'
+actionpack (5.0.2) lib/action_dispatch/middleware/callbacks.rb:36:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/debug_exceptions.rb:49:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.2) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.2) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.2) lib/rails/engine.rb:522:in `call'
+puma (3.8.2) lib/puma/configuration.rb:224:in `call'
+puma (3.8.2) lib/puma/server.rb:600:in `handle_request'
+puma (3.8.2) lib/puma/server.rb:435:in `process_client'
+puma (3.8.2) lib/puma/server.rb:299:in `block in run'
+puma (3.8.2) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-12 19:15:21 +0200
+Processing by DeviseTokenAuth::SessionsController#create as JSON
+  Parameters: {"email"=>"aaa@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"aaa@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'aaa@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Completed 401 Unauthorized in 38ms (Views: 0.2ms | ActiveRecord: 1.6ms)
+
+
+Started OPTIONS "/auth/sign_in" for 127.0.0.1 at 2017-04-12 19:23:17 +0200
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-12 19:23:17 +0200
+Processing by DeviseTokenAuth::SessionsController#create as JSON
+  Parameters: {"email"=>"aaa@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"aaa@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'aaa@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Completed 401 Unauthorized in 28ms (Views: 0.1ms | ActiveRecord: 2.4ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-12 19:23:31 +0200
+Processing by DeviseTokenAuth::SessionsController#create as JSON
+  Parameters: {"email"=>"aaa@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"aaa@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'aaa@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Completed 401 Unauthorized in 3ms (Views: 0.2ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-12 19:23:40 +0200
+Processing by DeviseTokenAuth::SessionsController#create as JSON
+  Parameters: {"email"=>"aaa@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"aaa@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'aaa@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Completed 401 Unauthorized in 4ms (Views: 0.1ms | ActiveRecord: 0.4ms)
+
+
+Started OPTIONS "/auth/sign_in" for 127.0.0.1 at 2017-04-12 22:13:12 +0200
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-12 22:13:13 +0200
+Processing by DeviseTokenAuth::SessionsController#create as JSON
+  Parameters: {"email"=>"aaa@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"aaa@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (308.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'aaa@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Completed 401 Unauthorized in 933ms (Views: 48.4ms | ActiveRecord: 308.0ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-12 22:18:51 +0200
+Processing by DeviseTokenAuth::SessionsController#create as JSON
+  Parameters: {"email"=>"aaa@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"aaa@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'aaa@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Unpermitted parameter: session
+Completed 500 Internal Server Error in 449ms (ActiveRecord: 35.1ms)
+
+
+  
+IndexError (string not matched):
+  
+devise_token_auth (0.1.40) app/controllers/devise_token_auth/sessions_controller.rb:42:in `[]='
+devise_token_auth (0.1.40) app/controllers/devise_token_auth/sessions_controller.rb:42:in `create'
+actionpack (5.0.2) lib/action_controller/metal/basic_implicit_render.rb:4:in `send_action'
+actionpack (5.0.2) lib/abstract_controller/base.rb:188:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/rendering.rb:30:in `process_action'
+actionpack (5.0.2) lib/abstract_controller/callbacks.rb:20:in `block in process_action'
+activesupport (5.0.2) lib/active_support/callbacks.rb:126:in `call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:506:in `block (2 levels) in compile'
+activesupport (5.0.2) lib/active_support/callbacks.rb:455:in `call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:101:in `__run_callbacks__'
+activesupport (5.0.2) lib/active_support/callbacks.rb:750:in `_run_process_action_callbacks'
+activesupport (5.0.2) lib/active_support/callbacks.rb:90:in `run_callbacks'
+actionpack (5.0.2) lib/abstract_controller/callbacks.rb:19:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/rescue.rb:20:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/instrumentation.rb:32:in `block in process_action'
+activesupport (5.0.2) lib/active_support/notifications.rb:164:in `block in instrument'
+activesupport (5.0.2) lib/active_support/notifications/instrumenter.rb:21:in `instrument'
+activesupport (5.0.2) lib/active_support/notifications.rb:164:in `instrument'
+actionpack (5.0.2) lib/action_controller/metal/instrumentation.rb:30:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/params_wrapper.rb:248:in `process_action'
+activerecord (5.0.2) lib/active_record/railties/controller_runtime.rb:18:in `process_action'
+actionpack (5.0.2) lib/abstract_controller/base.rb:126:in `process'
+actionpack (5.0.2) lib/action_controller/metal.rb:190:in `dispatch'
+actionpack (5.0.2) lib/action_controller/metal.rb:262:in `dispatch'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:50:in `dispatch'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:32:in `serve'
+actionpack (5.0.2) lib/action_dispatch/routing/mapper.rb:16:in `block in <class:Constraints>'
+actionpack (5.0.2) lib/action_dispatch/routing/mapper.rb:46:in `serve'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:39:in `block in serve'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:26:in `each'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:26:in `serve'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:725:in `call'
+rack-cors (0.4.1) lib/rack/cors.rb:81:in `call'
+warden (1.2.7) lib/warden/manager.rb:36:in `block in call'
+warden (1.2.7) lib/warden/manager.rb:35:in `catch'
+warden (1.2.7) lib/warden/manager.rb:35:in `call'
+rack (2.0.1) lib/rack/etag.rb:25:in `call'
+rack (2.0.1) lib/rack/conditional_get.rb:38:in `call'
+rack (2.0.1) lib/rack/head.rb:12:in `call'
+activerecord (5.0.2) lib/active_record/migration.rb:553:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/callbacks.rb:38:in `block in call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:97:in `__run_callbacks__'
+activesupport (5.0.2) lib/active_support/callbacks.rb:750:in `_run_call_callbacks'
+activesupport (5.0.2) lib/active_support/callbacks.rb:90:in `run_callbacks'
+actionpack (5.0.2) lib/action_dispatch/middleware/callbacks.rb:36:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/debug_exceptions.rb:49:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.2) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.2) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.2) lib/rails/engine.rb:522:in `call'
+puma (3.8.2) lib/puma/configuration.rb:224:in `call'
+puma (3.8.2) lib/puma/server.rb:600:in `handle_request'
+puma (3.8.2) lib/puma/server.rb:435:in `process_client'
+puma (3.8.2) lib/puma/server.rb:299:in `block in run'
+puma (3.8.2) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-12 22:19:24 +0200
+  [1m[36mActiveRecord::SchemaMigration Load (7.8ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by DeviseTokenAuth::SessionsController#create as JSON
+  Parameters: {"email"=>"aaa@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"aaa@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (1.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'aaa@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Unpermitted parameter: session
+Completed 500 Internal Server Error in 294ms (ActiveRecord: 3.4ms)
+
+
+  
+IndexError (string not matched):
+  
+devise_token_auth (0.1.40) app/controllers/devise_token_auth/sessions_controller.rb:42:in `[]='
+devise_token_auth (0.1.40) app/controllers/devise_token_auth/sessions_controller.rb:42:in `create'
+actionpack (5.0.2) lib/action_controller/metal/basic_implicit_render.rb:4:in `send_action'
+actionpack (5.0.2) lib/abstract_controller/base.rb:188:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/rendering.rb:30:in `process_action'
+actionpack (5.0.2) lib/abstract_controller/callbacks.rb:20:in `block in process_action'
+activesupport (5.0.2) lib/active_support/callbacks.rb:126:in `call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:506:in `block (2 levels) in compile'
+activesupport (5.0.2) lib/active_support/callbacks.rb:455:in `call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:101:in `__run_callbacks__'
+activesupport (5.0.2) lib/active_support/callbacks.rb:750:in `_run_process_action_callbacks'
+activesupport (5.0.2) lib/active_support/callbacks.rb:90:in `run_callbacks'
+actionpack (5.0.2) lib/abstract_controller/callbacks.rb:19:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/rescue.rb:20:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/instrumentation.rb:32:in `block in process_action'
+activesupport (5.0.2) lib/active_support/notifications.rb:164:in `block in instrument'
+activesupport (5.0.2) lib/active_support/notifications/instrumenter.rb:21:in `instrument'
+activesupport (5.0.2) lib/active_support/notifications.rb:164:in `instrument'
+actionpack (5.0.2) lib/action_controller/metal/instrumentation.rb:30:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/params_wrapper.rb:248:in `process_action'
+activerecord (5.0.2) lib/active_record/railties/controller_runtime.rb:18:in `process_action'
+actionpack (5.0.2) lib/abstract_controller/base.rb:126:in `process'
+actionpack (5.0.2) lib/action_controller/metal.rb:190:in `dispatch'
+actionpack (5.0.2) lib/action_controller/metal.rb:262:in `dispatch'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:50:in `dispatch'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:32:in `serve'
+actionpack (5.0.2) lib/action_dispatch/routing/mapper.rb:16:in `block in <class:Constraints>'
+actionpack (5.0.2) lib/action_dispatch/routing/mapper.rb:46:in `serve'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:39:in `block in serve'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:26:in `each'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:26:in `serve'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:725:in `call'
+rack-cors (0.4.1) lib/rack/cors.rb:81:in `call'
+warden (1.2.7) lib/warden/manager.rb:36:in `block in call'
+warden (1.2.7) lib/warden/manager.rb:35:in `catch'
+warden (1.2.7) lib/warden/manager.rb:35:in `call'
+rack (2.0.1) lib/rack/etag.rb:25:in `call'
+rack (2.0.1) lib/rack/conditional_get.rb:38:in `call'
+rack (2.0.1) lib/rack/head.rb:12:in `call'
+activerecord (5.0.2) lib/active_record/migration.rb:553:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/callbacks.rb:38:in `block in call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:97:in `__run_callbacks__'
+activesupport (5.0.2) lib/active_support/callbacks.rb:750:in `_run_call_callbacks'
+activesupport (5.0.2) lib/active_support/callbacks.rb:90:in `run_callbacks'
+actionpack (5.0.2) lib/action_dispatch/middleware/callbacks.rb:36:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/debug_exceptions.rb:49:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.2) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.2) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.2) lib/rails/engine.rb:522:in `call'
+puma (3.8.2) lib/puma/configuration.rb:224:in `call'
+puma (3.8.2) lib/puma/server.rb:600:in `handle_request'
+puma (3.8.2) lib/puma/server.rb:435:in `process_client'
+puma (3.8.2) lib/puma/server.rb:299:in `block in run'
+puma (3.8.2) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-12 22:21:33 +0200
+  [1m[36mActiveRecord::SchemaMigration Load (1.5ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  
+ActionController::RoutingError (undefined method `before_save' for ApplicationController:Class
+Did you mean?  before_filter):
+  
+app/controllers/application_controller.rb:2:in `<class:ApplicationController>'
+app/controllers/application_controller.rb:1:in `<top (required)>'
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-12 22:22:21 +0200
+  
+ActionController::RoutingError (undefined method `before_save' for ApplicationController:Class
+Did you mean?  before_filter):
+  
+app/controllers/application_controller.rb:2:in `<class:ApplicationController>'
+app/controllers/application_controller.rb:1:in `<top (required)>'
+Started OPTIONS "/auth/sign_in" for 127.0.0.1 at 2017-04-12 22:23:19 +0200
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-12 22:23:19 +0200
+Processing by DeviseTokenAuth::SessionsController#create as JSON
+  Parameters: {"email"=>"aaa@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"aaa@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'aaa@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Completed 401 Unauthorized in 130ms (Views: 0.2ms | ActiveRecord: 2.6ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-12 22:23:39 +0200
+  
+SyntaxError (/home/work/Documents/work/Sample-App/app/models/user.rb:5: syntax error, unexpected ','
+        , :omniauthable
+         ^):
+  
+app/models/user.rb:5: syntax error, unexpected ','
+config/routes.rb:2:in `block in <top (required)>'
+config/routes.rb:1:in `<top (required)>'
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-12 22:23:52 +0200
+Processing by DeviseTokenAuth::SessionsController#create as JSON
+  Parameters: {"email"=>"aaa@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"aaa@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (1.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'aaa@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Completed 401 Unauthorized in 50ms (Views: 0.2ms | ActiveRecord: 3.1ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-12 22:31:31 +0200
+  [1m[36mActiveRecord::SchemaMigration Load (3.4ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by DeviseTokenAuth::SessionsController#create as JSON
+  Parameters: {"email"=>"aaa@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"aaa@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (1.8ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'aaa@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Unpermitted parameter: session
+Completed 500 Internal Server Error in 350ms (ActiveRecord: 3.5ms)
+
+
+  
+IndexError (string not matched):
+  
+devise_token_auth (0.1.40) app/controllers/devise_token_auth/sessions_controller.rb:42:in `[]='
+devise_token_auth (0.1.40) app/controllers/devise_token_auth/sessions_controller.rb:42:in `create'
+actionpack (5.0.2) lib/action_controller/metal/basic_implicit_render.rb:4:in `send_action'
+actionpack (5.0.2) lib/abstract_controller/base.rb:188:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/rendering.rb:30:in `process_action'
+actionpack (5.0.2) lib/abstract_controller/callbacks.rb:20:in `block in process_action'
+activesupport (5.0.2) lib/active_support/callbacks.rb:126:in `call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:506:in `block (2 levels) in compile'
+activesupport (5.0.2) lib/active_support/callbacks.rb:455:in `call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:101:in `__run_callbacks__'
+activesupport (5.0.2) lib/active_support/callbacks.rb:750:in `_run_process_action_callbacks'
+activesupport (5.0.2) lib/active_support/callbacks.rb:90:in `run_callbacks'
+actionpack (5.0.2) lib/abstract_controller/callbacks.rb:19:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/rescue.rb:20:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/instrumentation.rb:32:in `block in process_action'
+activesupport (5.0.2) lib/active_support/notifications.rb:164:in `block in instrument'
+activesupport (5.0.2) lib/active_support/notifications/instrumenter.rb:21:in `instrument'
+activesupport (5.0.2) lib/active_support/notifications.rb:164:in `instrument'
+actionpack (5.0.2) lib/action_controller/metal/instrumentation.rb:30:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/params_wrapper.rb:248:in `process_action'
+activerecord (5.0.2) lib/active_record/railties/controller_runtime.rb:18:in `process_action'
+actionpack (5.0.2) lib/abstract_controller/base.rb:126:in `process'
+actionpack (5.0.2) lib/action_controller/metal.rb:190:in `dispatch'
+actionpack (5.0.2) lib/action_controller/metal.rb:262:in `dispatch'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:50:in `dispatch'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:32:in `serve'
+actionpack (5.0.2) lib/action_dispatch/routing/mapper.rb:16:in `block in <class:Constraints>'
+actionpack (5.0.2) lib/action_dispatch/routing/mapper.rb:46:in `serve'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:39:in `block in serve'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:26:in `each'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:26:in `serve'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:725:in `call'
+rack-cors (0.4.1) lib/rack/cors.rb:81:in `call'
+warden (1.2.7) lib/warden/manager.rb:36:in `block in call'
+warden (1.2.7) lib/warden/manager.rb:35:in `catch'
+warden (1.2.7) lib/warden/manager.rb:35:in `call'
+rack (2.0.1) lib/rack/etag.rb:25:in `call'
+rack (2.0.1) lib/rack/conditional_get.rb:38:in `call'
+rack (2.0.1) lib/rack/head.rb:12:in `call'
+activerecord (5.0.2) lib/active_record/migration.rb:553:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/callbacks.rb:38:in `block in call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:97:in `__run_callbacks__'
+activesupport (5.0.2) lib/active_support/callbacks.rb:750:in `_run_call_callbacks'
+activesupport (5.0.2) lib/active_support/callbacks.rb:90:in `run_callbacks'
+actionpack (5.0.2) lib/action_dispatch/middleware/callbacks.rb:36:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/debug_exceptions.rb:49:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.2) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.2) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.2) lib/rails/engine.rb:522:in `call'
+puma (3.8.2) lib/puma/configuration.rb:224:in `call'
+puma (3.8.2) lib/puma/server.rb:600:in `handle_request'
+puma (3.8.2) lib/puma/server.rb:435:in `process_client'
+puma (3.8.2) lib/puma/server.rb:299:in `block in run'
+puma (3.8.2) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+Started OPTIONS "/auth/sign_in" for 127.0.0.1 at 2017-04-12 22:36:07 +0200
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-12 22:36:07 +0200
+Processing by DeviseTokenAuth::SessionsController#create as JSON
+  Parameters: {"email"=>"aaa@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"aaa@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'aaa@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Unpermitted parameter: session
+Completed 500 Internal Server Error in 314ms (ActiveRecord: 0.4ms)
+
+
+  
+IndexError (string not matched):
+  
+devise_token_auth (0.1.40) app/controllers/devise_token_auth/sessions_controller.rb:42:in `[]='
+devise_token_auth (0.1.40) app/controllers/devise_token_auth/sessions_controller.rb:42:in `create'
+actionpack (5.0.2) lib/action_controller/metal/basic_implicit_render.rb:4:in `send_action'
+actionpack (5.0.2) lib/abstract_controller/base.rb:188:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/rendering.rb:30:in `process_action'
+actionpack (5.0.2) lib/abstract_controller/callbacks.rb:20:in `block in process_action'
+activesupport (5.0.2) lib/active_support/callbacks.rb:126:in `call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:506:in `block (2 levels) in compile'
+activesupport (5.0.2) lib/active_support/callbacks.rb:455:in `call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:101:in `__run_callbacks__'
+activesupport (5.0.2) lib/active_support/callbacks.rb:750:in `_run_process_action_callbacks'
+activesupport (5.0.2) lib/active_support/callbacks.rb:90:in `run_callbacks'
+actionpack (5.0.2) lib/abstract_controller/callbacks.rb:19:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/rescue.rb:20:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/instrumentation.rb:32:in `block in process_action'
+activesupport (5.0.2) lib/active_support/notifications.rb:164:in `block in instrument'
+activesupport (5.0.2) lib/active_support/notifications/instrumenter.rb:21:in `instrument'
+activesupport (5.0.2) lib/active_support/notifications.rb:164:in `instrument'
+actionpack (5.0.2) lib/action_controller/metal/instrumentation.rb:30:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/params_wrapper.rb:248:in `process_action'
+activerecord (5.0.2) lib/active_record/railties/controller_runtime.rb:18:in `process_action'
+actionpack (5.0.2) lib/abstract_controller/base.rb:126:in `process'
+actionpack (5.0.2) lib/action_controller/metal.rb:190:in `dispatch'
+actionpack (5.0.2) lib/action_controller/metal.rb:262:in `dispatch'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:50:in `dispatch'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:32:in `serve'
+actionpack (5.0.2) lib/action_dispatch/routing/mapper.rb:16:in `block in <class:Constraints>'
+actionpack (5.0.2) lib/action_dispatch/routing/mapper.rb:46:in `serve'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:39:in `block in serve'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:26:in `each'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:26:in `serve'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:725:in `call'
+rack-cors (0.4.1) lib/rack/cors.rb:81:in `call'
+warden (1.2.7) lib/warden/manager.rb:36:in `block in call'
+warden (1.2.7) lib/warden/manager.rb:35:in `catch'
+warden (1.2.7) lib/warden/manager.rb:35:in `call'
+rack (2.0.1) lib/rack/etag.rb:25:in `call'
+rack (2.0.1) lib/rack/conditional_get.rb:38:in `call'
+rack (2.0.1) lib/rack/head.rb:12:in `call'
+activerecord (5.0.2) lib/active_record/migration.rb:553:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/callbacks.rb:38:in `block in call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:97:in `__run_callbacks__'
+activesupport (5.0.2) lib/active_support/callbacks.rb:750:in `_run_call_callbacks'
+activesupport (5.0.2) lib/active_support/callbacks.rb:90:in `run_callbacks'
+actionpack (5.0.2) lib/action_dispatch/middleware/callbacks.rb:36:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/debug_exceptions.rb:49:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.2) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.2) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.2) lib/rails/engine.rb:522:in `call'
+puma (3.8.2) lib/puma/configuration.rb:224:in `call'
+puma (3.8.2) lib/puma/server.rb:600:in `handle_request'
+puma (3.8.2) lib/puma/server.rb:435:in `process_client'
+puma (3.8.2) lib/puma/server.rb:299:in `block in run'
+puma (3.8.2) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-12 22:36:41 +0200
+Processing by DeviseTokenAuth::SessionsController#create as JSON
+  Parameters: {"email"=>"aaa@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"aaa@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (1.7ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'aaa@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Unpermitted parameter: session
+Completed 500 Internal Server Error in 330ms (ActiveRecord: 3.1ms)
+
+
+  
+IndexError (string not matched):
+  
+devise_token_auth (0.1.40) app/controllers/devise_token_auth/sessions_controller.rb:42:in `[]='
+devise_token_auth (0.1.40) app/controllers/devise_token_auth/sessions_controller.rb:42:in `create'
+actionpack (5.0.2) lib/action_controller/metal/basic_implicit_render.rb:4:in `send_action'
+actionpack (5.0.2) lib/abstract_controller/base.rb:188:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/rendering.rb:30:in `process_action'
+actionpack (5.0.2) lib/abstract_controller/callbacks.rb:20:in `block in process_action'
+activesupport (5.0.2) lib/active_support/callbacks.rb:126:in `call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:506:in `block (2 levels) in compile'
+activesupport (5.0.2) lib/active_support/callbacks.rb:455:in `call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:101:in `__run_callbacks__'
+activesupport (5.0.2) lib/active_support/callbacks.rb:750:in `_run_process_action_callbacks'
+activesupport (5.0.2) lib/active_support/callbacks.rb:90:in `run_callbacks'
+actionpack (5.0.2) lib/abstract_controller/callbacks.rb:19:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/rescue.rb:20:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/instrumentation.rb:32:in `block in process_action'
+activesupport (5.0.2) lib/active_support/notifications.rb:164:in `block in instrument'
+activesupport (5.0.2) lib/active_support/notifications/instrumenter.rb:21:in `instrument'
+activesupport (5.0.2) lib/active_support/notifications.rb:164:in `instrument'
+actionpack (5.0.2) lib/action_controller/metal/instrumentation.rb:30:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/params_wrapper.rb:248:in `process_action'
+activerecord (5.0.2) lib/active_record/railties/controller_runtime.rb:18:in `process_action'
+actionpack (5.0.2) lib/abstract_controller/base.rb:126:in `process'
+actionpack (5.0.2) lib/action_controller/metal.rb:190:in `dispatch'
+actionpack (5.0.2) lib/action_controller/metal.rb:262:in `dispatch'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:50:in `dispatch'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:32:in `serve'
+actionpack (5.0.2) lib/action_dispatch/routing/mapper.rb:16:in `block in <class:Constraints>'
+actionpack (5.0.2) lib/action_dispatch/routing/mapper.rb:46:in `serve'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:39:in `block in serve'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:26:in `each'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:26:in `serve'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:725:in `call'
+rack-cors (0.4.1) lib/rack/cors.rb:81:in `call'
+warden (1.2.7) lib/warden/manager.rb:36:in `block in call'
+warden (1.2.7) lib/warden/manager.rb:35:in `catch'
+warden (1.2.7) lib/warden/manager.rb:35:in `call'
+rack (2.0.1) lib/rack/etag.rb:25:in `call'
+rack (2.0.1) lib/rack/conditional_get.rb:38:in `call'
+rack (2.0.1) lib/rack/head.rb:12:in `call'
+activerecord (5.0.2) lib/active_record/migration.rb:553:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/callbacks.rb:38:in `block in call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:97:in `__run_callbacks__'
+activesupport (5.0.2) lib/active_support/callbacks.rb:750:in `_run_call_callbacks'
+activesupport (5.0.2) lib/active_support/callbacks.rb:90:in `run_callbacks'
+actionpack (5.0.2) lib/action_dispatch/middleware/callbacks.rb:36:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/debug_exceptions.rb:49:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.2) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.2) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.2) lib/rails/engine.rb:522:in `call'
+puma (3.8.2) lib/puma/configuration.rb:224:in `call'
+puma (3.8.2) lib/puma/server.rb:600:in `handle_request'
+puma (3.8.2) lib/puma/server.rb:435:in `process_client'
+puma (3.8.2) lib/puma/server.rb:299:in `block in run'
+puma (3.8.2) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-12 22:37:10 +0200
+Processing by DeviseTokenAuth::SessionsController#create as JSON
+  Parameters: {"email"=>"aaa@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"aaa@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'aaa@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Completed 401 Unauthorized in 117ms (Views: 0.2ms | ActiveRecord: 0.7ms)
+
+
+  [1m[35m (22.4ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying PRIMARY KEY)[0m
+  [1m[35m (9.0ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying PRIMARY KEY, "value" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(3538794019947244905);[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to DeviseTokenAuthCreateUsers (20170411174142)
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (6.2ms)[0m  [1m[35mCREATE TABLE "users" ("id" serial primary key, "provider" character varying DEFAULT 'email' NOT NULL, "uid" character varying DEFAULT '' NOT NULL, "encrypted_password" character varying DEFAULT '' NOT NULL, "reset_password_token" character varying, "reset_password_sent_at" timestamp, "remember_created_at" timestamp, "sign_in_count" integer DEFAULT 0 NOT NULL, "current_sign_in_at" timestamp, "last_sign_in_at" timestamp, "current_sign_in_ip" character varying, "last_sign_in_ip" character varying, "confirmation_token" character varying, "confirmed_at" timestamp, "confirmation_sent_at" timestamp, "unconfirmed_email" character varying, "name" character varying, "nickname" character varying, "image" character varying, "email" character varying, "tokens" json, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (2.4ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_email" ON "users"  ("email")[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_uid_and_provider" ON "users"  ("uid", "provider")[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_reset_password_token" ON "users"  ("reset_password_token")[0m
+  [1m[35m (1.8ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_confirmation_token" ON "users"  ("confirmation_token")[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20170411174142"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (2.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "development"], ["created_at", 2017-04-12 22:07:57 UTC], ["updated_at", 2017-04-12 22:07:57 UTC]]
+  [1m[35m (17.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(3538794019947244905)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (4.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" WHERE "users"."provider" = $1 AND "users"."email" = $2[0m  [["provider", "email"], ["email", "user@example.com"]]
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "users" ("uid", "encrypted_password", "name", "nickname", "email", "tokens", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"[0m  [["uid", "user@example.com"], ["encrypted_password", "$2a$10$Z45F2ZrMsNXV9cVfS3W0NeBO37nIRAkGUeEEzdkfzwgSZenFUJzei"], ["name", "User One"], ["nickname", "UOne"], ["email", "user@example.com"], ["tokens", "\"{}\""], ["created_at", 2017-04-12 22:07:57 UTC], ["updated_at", 2017-04-12 22:07:57 UTC]]
+  [1m[35m (9.6ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-13 00:08:06 +0200
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by DeviseTokenAuth::SessionsController#create as */*
+  Parameters: {"email"=>"user@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"user@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (1.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'user@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Unpermitted parameter: session
+Completed 500 Internal Server Error in 308ms (ActiveRecord: 3.1ms)
+
+
+  
+IndexError (string not matched):
+  
+devise_token_auth (0.1.40) app/controllers/devise_token_auth/sessions_controller.rb:42:in `[]='
+devise_token_auth (0.1.40) app/controllers/devise_token_auth/sessions_controller.rb:42:in `create'
+actionpack (5.0.2) lib/action_controller/metal/basic_implicit_render.rb:4:in `send_action'
+actionpack (5.0.2) lib/abstract_controller/base.rb:188:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/rendering.rb:30:in `process_action'
+actionpack (5.0.2) lib/abstract_controller/callbacks.rb:20:in `block in process_action'
+activesupport (5.0.2) lib/active_support/callbacks.rb:126:in `call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:506:in `block (2 levels) in compile'
+activesupport (5.0.2) lib/active_support/callbacks.rb:455:in `call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:101:in `__run_callbacks__'
+activesupport (5.0.2) lib/active_support/callbacks.rb:750:in `_run_process_action_callbacks'
+activesupport (5.0.2) lib/active_support/callbacks.rb:90:in `run_callbacks'
+actionpack (5.0.2) lib/abstract_controller/callbacks.rb:19:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/rescue.rb:20:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/instrumentation.rb:32:in `block in process_action'
+activesupport (5.0.2) lib/active_support/notifications.rb:164:in `block in instrument'
+activesupport (5.0.2) lib/active_support/notifications/instrumenter.rb:21:in `instrument'
+activesupport (5.0.2) lib/active_support/notifications.rb:164:in `instrument'
+actionpack (5.0.2) lib/action_controller/metal/instrumentation.rb:30:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/params_wrapper.rb:248:in `process_action'
+activerecord (5.0.2) lib/active_record/railties/controller_runtime.rb:18:in `process_action'
+actionpack (5.0.2) lib/abstract_controller/base.rb:126:in `process'
+actionpack (5.0.2) lib/action_controller/metal.rb:190:in `dispatch'
+actionpack (5.0.2) lib/action_controller/metal.rb:262:in `dispatch'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:50:in `dispatch'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:32:in `serve'
+actionpack (5.0.2) lib/action_dispatch/routing/mapper.rb:16:in `block in <class:Constraints>'
+actionpack (5.0.2) lib/action_dispatch/routing/mapper.rb:46:in `serve'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:39:in `block in serve'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:26:in `each'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:26:in `serve'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:725:in `call'
+rack-cors (0.4.1) lib/rack/cors.rb:81:in `call'
+warden (1.2.7) lib/warden/manager.rb:36:in `block in call'
+warden (1.2.7) lib/warden/manager.rb:35:in `catch'
+warden (1.2.7) lib/warden/manager.rb:35:in `call'
+rack (2.0.1) lib/rack/etag.rb:25:in `call'
+rack (2.0.1) lib/rack/conditional_get.rb:38:in `call'
+rack (2.0.1) lib/rack/head.rb:12:in `call'
+activerecord (5.0.2) lib/active_record/migration.rb:553:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/callbacks.rb:38:in `block in call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:97:in `__run_callbacks__'
+activesupport (5.0.2) lib/active_support/callbacks.rb:750:in `_run_call_callbacks'
+activesupport (5.0.2) lib/active_support/callbacks.rb:90:in `run_callbacks'
+actionpack (5.0.2) lib/action_dispatch/middleware/callbacks.rb:36:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/debug_exceptions.rb:49:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.2) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.2) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.2) lib/rails/engine.rb:522:in `call'
+puma (3.8.2) lib/puma/configuration.rb:224:in `call'
+puma (3.8.2) lib/puma/server.rb:600:in `handle_request'
+puma (3.8.2) lib/puma/server.rb:435:in `process_client'
+puma (3.8.2) lib/puma/server.rb:299:in `block in run'
+puma (3.8.2) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-13 00:08:51 +0200
+  [1m[36mActiveRecord::SchemaMigration Load (4.5ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by DeviseTokenAuth::SessionsController#create as */*
+  Parameters: {"email"=>"user@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"user@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (2.7ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'user@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Unpermitted parameter: session
+Completed 500 Internal Server Error in 324ms (ActiveRecord: 4.5ms)
+
+
+  
+IndexError (string not matched):
+  
+devise_token_auth (0.1.40) app/controllers/devise_token_auth/sessions_controller.rb:42:in `[]='
+devise_token_auth (0.1.40) app/controllers/devise_token_auth/sessions_controller.rb:42:in `create'
+actionpack (5.0.2) lib/action_controller/metal/basic_implicit_render.rb:4:in `send_action'
+actionpack (5.0.2) lib/abstract_controller/base.rb:188:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/rendering.rb:30:in `process_action'
+actionpack (5.0.2) lib/abstract_controller/callbacks.rb:20:in `block in process_action'
+activesupport (5.0.2) lib/active_support/callbacks.rb:126:in `call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:506:in `block (2 levels) in compile'
+activesupport (5.0.2) lib/active_support/callbacks.rb:455:in `call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:101:in `__run_callbacks__'
+activesupport (5.0.2) lib/active_support/callbacks.rb:750:in `_run_process_action_callbacks'
+activesupport (5.0.2) lib/active_support/callbacks.rb:90:in `run_callbacks'
+actionpack (5.0.2) lib/abstract_controller/callbacks.rb:19:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/rescue.rb:20:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/instrumentation.rb:32:in `block in process_action'
+activesupport (5.0.2) lib/active_support/notifications.rb:164:in `block in instrument'
+activesupport (5.0.2) lib/active_support/notifications/instrumenter.rb:21:in `instrument'
+activesupport (5.0.2) lib/active_support/notifications.rb:164:in `instrument'
+actionpack (5.0.2) lib/action_controller/metal/instrumentation.rb:30:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/params_wrapper.rb:248:in `process_action'
+activerecord (5.0.2) lib/active_record/railties/controller_runtime.rb:18:in `process_action'
+actionpack (5.0.2) lib/abstract_controller/base.rb:126:in `process'
+actionpack (5.0.2) lib/action_controller/metal.rb:190:in `dispatch'
+actionpack (5.0.2) lib/action_controller/metal.rb:262:in `dispatch'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:50:in `dispatch'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:32:in `serve'
+actionpack (5.0.2) lib/action_dispatch/routing/mapper.rb:16:in `block in <class:Constraints>'
+actionpack (5.0.2) lib/action_dispatch/routing/mapper.rb:46:in `serve'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:39:in `block in serve'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:26:in `each'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:26:in `serve'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:725:in `call'
+rack-cors (0.4.1) lib/rack/cors.rb:81:in `call'
+warden (1.2.7) lib/warden/manager.rb:36:in `block in call'
+warden (1.2.7) lib/warden/manager.rb:35:in `catch'
+warden (1.2.7) lib/warden/manager.rb:35:in `call'
+rack (2.0.1) lib/rack/etag.rb:25:in `call'
+rack (2.0.1) lib/rack/conditional_get.rb:38:in `call'
+rack (2.0.1) lib/rack/head.rb:12:in `call'
+activerecord (5.0.2) lib/active_record/migration.rb:553:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/callbacks.rb:38:in `block in call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:97:in `__run_callbacks__'
+activesupport (5.0.2) lib/active_support/callbacks.rb:750:in `_run_call_callbacks'
+activesupport (5.0.2) lib/active_support/callbacks.rb:90:in `run_callbacks'
+actionpack (5.0.2) lib/action_dispatch/middleware/callbacks.rb:36:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/debug_exceptions.rb:49:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.2) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.2) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.2) lib/rails/engine.rb:522:in `call'
+puma (3.8.2) lib/puma/configuration.rb:224:in `call'
+puma (3.8.2) lib/puma/server.rb:600:in `handle_request'
+puma (3.8.2) lib/puma/server.rb:435:in `process_client'
+puma (3.8.2) lib/puma/server.rb:299:in `block in run'
+puma (3.8.2) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-13 00:24:17 +0200
+  [1m[36mActiveRecord::SchemaMigration Load (2.8ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by DeviseTokenAuth::SessionsController#create as */*
+  Parameters: {"email"=>"user@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"user@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (1.8ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'user@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Unpermitted parameter: session
+Completed 500 Internal Server Error in 365ms (ActiveRecord: 3.5ms)
+
+
+  
+IndexError (string not matched):
+  
+devise_token_auth (0.1.40) app/controllers/devise_token_auth/sessions_controller.rb:42:in `[]='
+devise_token_auth (0.1.40) app/controllers/devise_token_auth/sessions_controller.rb:42:in `create'
+actionpack (5.0.2) lib/action_controller/metal/basic_implicit_render.rb:4:in `send_action'
+actionpack (5.0.2) lib/abstract_controller/base.rb:188:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/rendering.rb:30:in `process_action'
+actionpack (5.0.2) lib/abstract_controller/callbacks.rb:20:in `block in process_action'
+activesupport (5.0.2) lib/active_support/callbacks.rb:126:in `call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:506:in `block (2 levels) in compile'
+activesupport (5.0.2) lib/active_support/callbacks.rb:455:in `call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:101:in `__run_callbacks__'
+activesupport (5.0.2) lib/active_support/callbacks.rb:750:in `_run_process_action_callbacks'
+activesupport (5.0.2) lib/active_support/callbacks.rb:90:in `run_callbacks'
+actionpack (5.0.2) lib/abstract_controller/callbacks.rb:19:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/rescue.rb:20:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/instrumentation.rb:32:in `block in process_action'
+activesupport (5.0.2) lib/active_support/notifications.rb:164:in `block in instrument'
+activesupport (5.0.2) lib/active_support/notifications/instrumenter.rb:21:in `instrument'
+activesupport (5.0.2) lib/active_support/notifications.rb:164:in `instrument'
+actionpack (5.0.2) lib/action_controller/metal/instrumentation.rb:30:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/params_wrapper.rb:248:in `process_action'
+activerecord (5.0.2) lib/active_record/railties/controller_runtime.rb:18:in `process_action'
+actionpack (5.0.2) lib/abstract_controller/base.rb:126:in `process'
+actionpack (5.0.2) lib/action_controller/metal.rb:190:in `dispatch'
+actionpack (5.0.2) lib/action_controller/metal.rb:262:in `dispatch'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:50:in `dispatch'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:32:in `serve'
+actionpack (5.0.2) lib/action_dispatch/routing/mapper.rb:16:in `block in <class:Constraints>'
+actionpack (5.0.2) lib/action_dispatch/routing/mapper.rb:46:in `serve'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:39:in `block in serve'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:26:in `each'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:26:in `serve'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:725:in `call'
+rack-cors (0.4.1) lib/rack/cors.rb:81:in `call'
+warden (1.2.7) lib/warden/manager.rb:36:in `block in call'
+warden (1.2.7) lib/warden/manager.rb:35:in `catch'
+warden (1.2.7) lib/warden/manager.rb:35:in `call'
+rack (2.0.1) lib/rack/etag.rb:25:in `call'
+rack (2.0.1) lib/rack/conditional_get.rb:38:in `call'
+rack (2.0.1) lib/rack/head.rb:12:in `call'
+activerecord (5.0.2) lib/active_record/migration.rb:553:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/callbacks.rb:38:in `block in call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:97:in `__run_callbacks__'
+activesupport (5.0.2) lib/active_support/callbacks.rb:750:in `_run_call_callbacks'
+activesupport (5.0.2) lib/active_support/callbacks.rb:90:in `run_callbacks'
+actionpack (5.0.2) lib/action_dispatch/middleware/callbacks.rb:36:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/debug_exceptions.rb:49:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.2) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.2) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.2) lib/rails/engine.rb:522:in `call'
+puma (3.8.2) lib/puma/configuration.rb:224:in `call'
+puma (3.8.2) lib/puma/server.rb:600:in `handle_request'
+puma (3.8.2) lib/puma/server.rb:435:in `process_client'
+puma (3.8.2) lib/puma/server.rb:299:in `block in run'
+puma (3.8.2) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-13 00:25:13 +0200
+  [1m[36mActiveRecord::SchemaMigration Load (3.0ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by DeviseTokenAuth::SessionsController#create as */*
+  Parameters: {"email"=>"user@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"user@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'user@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Unpermitted parameter: session
+Completed 500 Internal Server Error in 331ms (ActiveRecord: 4.9ms)
+
+
+  
+IndexError (string not matched):
+  
+devise_token_auth (0.1.40) app/controllers/devise_token_auth/sessions_controller.rb:42:in `[]='
+devise_token_auth (0.1.40) app/controllers/devise_token_auth/sessions_controller.rb:42:in `create'
+actionpack (5.0.2) lib/action_controller/metal/basic_implicit_render.rb:4:in `send_action'
+actionpack (5.0.2) lib/abstract_controller/base.rb:188:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/rendering.rb:30:in `process_action'
+actionpack (5.0.2) lib/abstract_controller/callbacks.rb:20:in `block in process_action'
+activesupport (5.0.2) lib/active_support/callbacks.rb:126:in `call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:506:in `block (2 levels) in compile'
+activesupport (5.0.2) lib/active_support/callbacks.rb:455:in `call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:101:in `__run_callbacks__'
+activesupport (5.0.2) lib/active_support/callbacks.rb:750:in `_run_process_action_callbacks'
+activesupport (5.0.2) lib/active_support/callbacks.rb:90:in `run_callbacks'
+actionpack (5.0.2) lib/abstract_controller/callbacks.rb:19:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/rescue.rb:20:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/instrumentation.rb:32:in `block in process_action'
+activesupport (5.0.2) lib/active_support/notifications.rb:164:in `block in instrument'
+activesupport (5.0.2) lib/active_support/notifications/instrumenter.rb:21:in `instrument'
+activesupport (5.0.2) lib/active_support/notifications.rb:164:in `instrument'
+actionpack (5.0.2) lib/action_controller/metal/instrumentation.rb:30:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/params_wrapper.rb:248:in `process_action'
+activerecord (5.0.2) lib/active_record/railties/controller_runtime.rb:18:in `process_action'
+actionpack (5.0.2) lib/abstract_controller/base.rb:126:in `process'
+actionpack (5.0.2) lib/action_controller/metal.rb:190:in `dispatch'
+actionpack (5.0.2) lib/action_controller/metal.rb:262:in `dispatch'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:50:in `dispatch'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:32:in `serve'
+actionpack (5.0.2) lib/action_dispatch/routing/mapper.rb:16:in `block in <class:Constraints>'
+actionpack (5.0.2) lib/action_dispatch/routing/mapper.rb:46:in `serve'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:39:in `block in serve'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:26:in `each'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:26:in `serve'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:725:in `call'
+rack-cors (0.4.1) lib/rack/cors.rb:81:in `call'
+warden (1.2.7) lib/warden/manager.rb:36:in `block in call'
+warden (1.2.7) lib/warden/manager.rb:35:in `catch'
+warden (1.2.7) lib/warden/manager.rb:35:in `call'
+rack (2.0.1) lib/rack/etag.rb:25:in `call'
+rack (2.0.1) lib/rack/conditional_get.rb:38:in `call'
+rack (2.0.1) lib/rack/head.rb:12:in `call'
+activerecord (5.0.2) lib/active_record/migration.rb:553:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/callbacks.rb:38:in `block in call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:97:in `__run_callbacks__'
+activesupport (5.0.2) lib/active_support/callbacks.rb:750:in `_run_call_callbacks'
+activesupport (5.0.2) lib/active_support/callbacks.rb:90:in `run_callbacks'
+actionpack (5.0.2) lib/action_dispatch/middleware/callbacks.rb:36:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/debug_exceptions.rb:49:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.2) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.2) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.2) lib/rails/engine.rb:522:in `call'
+puma (3.8.2) lib/puma/configuration.rb:224:in `call'
+puma (3.8.2) lib/puma/server.rb:600:in `handle_request'
+puma (3.8.2) lib/puma/server.rb:435:in `process_client'
+puma (3.8.2) lib/puma/server.rb:299:in `block in run'
+puma (3.8.2) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-13 00:28:33 +0200
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by DeviseTokenAuth::SessionsController#create as */*
+  Parameters: {"email"=>"user@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"user@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (2.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'user@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Unpermitted parameter: session
+Completed 500 Internal Server Error in 340ms (ActiveRecord: 4.1ms)
+
+
+  
+IndexError (string not matched):
+  
+devise_token_auth (0.1.40) app/controllers/devise_token_auth/sessions_controller.rb:42:in `[]='
+devise_token_auth (0.1.40) app/controllers/devise_token_auth/sessions_controller.rb:42:in `create'
+actionpack (5.0.2) lib/action_controller/metal/basic_implicit_render.rb:4:in `send_action'
+actionpack (5.0.2) lib/abstract_controller/base.rb:188:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/rendering.rb:30:in `process_action'
+actionpack (5.0.2) lib/abstract_controller/callbacks.rb:20:in `block in process_action'
+activesupport (5.0.2) lib/active_support/callbacks.rb:126:in `call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:506:in `block (2 levels) in compile'
+activesupport (5.0.2) lib/active_support/callbacks.rb:455:in `call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:101:in `__run_callbacks__'
+activesupport (5.0.2) lib/active_support/callbacks.rb:750:in `_run_process_action_callbacks'
+activesupport (5.0.2) lib/active_support/callbacks.rb:90:in `run_callbacks'
+actionpack (5.0.2) lib/abstract_controller/callbacks.rb:19:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/rescue.rb:20:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/instrumentation.rb:32:in `block in process_action'
+activesupport (5.0.2) lib/active_support/notifications.rb:164:in `block in instrument'
+activesupport (5.0.2) lib/active_support/notifications/instrumenter.rb:21:in `instrument'
+activesupport (5.0.2) lib/active_support/notifications.rb:164:in `instrument'
+actionpack (5.0.2) lib/action_controller/metal/instrumentation.rb:30:in `process_action'
+actionpack (5.0.2) lib/action_controller/metal/params_wrapper.rb:248:in `process_action'
+activerecord (5.0.2) lib/active_record/railties/controller_runtime.rb:18:in `process_action'
+actionpack (5.0.2) lib/abstract_controller/base.rb:126:in `process'
+actionpack (5.0.2) lib/action_controller/metal.rb:190:in `dispatch'
+actionpack (5.0.2) lib/action_controller/metal.rb:262:in `dispatch'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:50:in `dispatch'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:32:in `serve'
+actionpack (5.0.2) lib/action_dispatch/routing/mapper.rb:16:in `block in <class:Constraints>'
+actionpack (5.0.2) lib/action_dispatch/routing/mapper.rb:46:in `serve'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:39:in `block in serve'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:26:in `each'
+actionpack (5.0.2) lib/action_dispatch/journey/router.rb:26:in `serve'
+actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:725:in `call'
+rack-cors (0.4.1) lib/rack/cors.rb:81:in `call'
+warden (1.2.7) lib/warden/manager.rb:36:in `block in call'
+warden (1.2.7) lib/warden/manager.rb:35:in `catch'
+warden (1.2.7) lib/warden/manager.rb:35:in `call'
+rack (2.0.1) lib/rack/etag.rb:25:in `call'
+rack (2.0.1) lib/rack/conditional_get.rb:38:in `call'
+rack (2.0.1) lib/rack/head.rb:12:in `call'
+activerecord (5.0.2) lib/active_record/migration.rb:553:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/callbacks.rb:38:in `block in call'
+activesupport (5.0.2) lib/active_support/callbacks.rb:97:in `__run_callbacks__'
+activesupport (5.0.2) lib/active_support/callbacks.rb:750:in `_run_call_callbacks'
+activesupport (5.0.2) lib/active_support/callbacks.rb:90:in `run_callbacks'
+actionpack (5.0.2) lib/action_dispatch/middleware/callbacks.rb:36:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/debug_exceptions.rb:49:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.2) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.2) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.2) lib/rails/engine.rb:522:in `call'
+puma (3.8.2) lib/puma/configuration.rb:224:in `call'
+puma (3.8.2) lib/puma/server.rb:600:in `handle_request'
+puma (3.8.2) lib/puma/server.rb:435:in `process_client'
+puma (3.8.2) lib/puma/server.rb:299:in `block in run'
+puma (3.8.2) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", :environment]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", :environment]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", :environment]]
+  [1m[35m (125.2ms)[0m  [1m[35mDROP DATABASE IF EXISTS "rails_devise_token_auth_development"[0m
+  [1m[35m (105.1ms)[0m  [1m[35mDROP DATABASE IF EXISTS "rails_devise_token_auth_test"[0m
+  [1m[35m (111.8ms)[0m  [1m[35mDROP DATABASE IF EXISTS "rails_devise_token_auth_development"[0m
+  [1m[35m (104.7ms)[0m  [1m[35mDROP DATABASE IF EXISTS "rails_devise_token_auth_test"[0m
+  [1m[35m (31.3ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying PRIMARY KEY)[0m
+  [1m[35m (12.3ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying PRIMARY KEY, "value" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (9.0ms)[0m  [1m[34mSELECT pg_try_advisory_lock(3538794019947244905);[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.9ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to DeviseTokenAuthCreateUsers (20170411174142)
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (5.0ms)[0m  [1m[35mCREATE TABLE "users" ("id" serial primary key, "provider" character varying DEFAULT 'email' NOT NULL, "uid" character varying DEFAULT '' NOT NULL, "encrypted_password" character varying DEFAULT '' NOT NULL, "reset_password_token" character varying, "reset_password_sent_at" timestamp, "remember_created_at" timestamp, "sign_in_count" integer DEFAULT 0 NOT NULL, "current_sign_in_at" timestamp, "last_sign_in_at" timestamp, "current_sign_in_ip" character varying, "last_sign_in_ip" character varying, "confirmation_token" character varying, "confirmed_at" timestamp, "confirmation_sent_at" timestamp, "unconfirmed_email" character varying, "name" character varying, "nickname" character varying, "image" character varying, "email" character varying, "tokens" json, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (1.7ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_email" ON "users"  ("email")[0m
+  [1m[35m (2.1ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_uid_and_provider" ON "users"  ("uid", "provider")[0m
+  [1m[35m (1.6ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_reset_password_token" ON "users"  ("reset_password_token")[0m
+  [1m[35m (3.5ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_confirmation_token" ON "users"  ("confirmation_token")[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20170411174142"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "development"], ["created_at", 2017-04-13 08:09:58 UTC], ["updated_at", 2017-04-13 08:09:58 UTC]]
+  [1m[35m (17.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(3538794019947244905)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" WHERE "users"."provider" = $1 AND "users"."email" = $2[0m  [["provider", "email"], ["email", "user@example.com"]]
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "users" ("uid", "encrypted_password", "name", "nickname", "email", "tokens", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"[0m  [["uid", "user@example.com"], ["encrypted_password", "$2a$10$s0F97jxZe7HBDhjo4.LY.OgPr0av87XuVtWtS2ykytpyOV0OWKhzm"], ["name", "User One"], ["nickname", "UOne"], ["email", "user@example.com"], ["tokens", "{}"], ["created_at", 2017-04-13 08:10:28 UTC], ["updated_at", 2017-04-13 08:10:28 UTC]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-13 10:10:41 +0200
+  [1m[36mActiveRecord::SchemaMigration Load (3.9ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by DeviseTokenAuth::SessionsController#create as */*
+  Parameters: {"email"=>"user@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"user@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'user@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[35m (5.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[33mUPDATE "users" SET "tokens" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["tokens", "{\"Y430Lur7SGlzud7eg-wdUA\":{\"token\":\"$2a$10$nOjb0dGgyEEWGQFC4nyfWOfoVckfpUcbmmelOaUM9oBGhGfb4F4A.\",\"expiry\":1493280642}}"], ["updated_at", 2017-04-13 08:10:42 UTC], ["id", 1]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[33mUPDATE "users" SET "sign_in_count" = $1, "current_sign_in_at" = $2, "last_sign_in_at" = $3, "current_sign_in_ip" = $4, "last_sign_in_ip" = $5, "updated_at" = $6 WHERE "users"."id" = $7[0m  [["sign_in_count", 1], ["current_sign_in_at", 2017-04-13 08:10:42 UTC], ["last_sign_in_at", 2017-04-13 08:10:42 UTC], ["current_sign_in_ip", "127.0.0.1"], ["last_sign_in_ip", "127.0.0.1"], ["updated_at", 2017-04-13 08:10:42 UTC], ["id", 1]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (1.5ms)[0m  [1m[37mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2 FOR UPDATE[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35mSQL (0.4ms)[0m  [1m[33mUPDATE "users" SET "tokens" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["tokens", "{\"Y430Lur7SGlzud7eg-wdUA\":{\"token\":\"$2a$10$5K48fycFqMqOeQ9cy5QMo.Rbz/XJMgr4nj20Lum0GSt3o3WMwc.iy\",\"expiry\":1493280642,\"last_token\":\"$2a$10$nOjb0dGgyEEWGQFC4nyfWOfoVckfpUcbmmelOaUM9oBGhGfb4F4A.\",\"updated_at\":\"2017-04-13T10:10:42.289+02:00\"}}"], ["updated_at", 2017-04-13 08:10:42 UTC], ["id", 1]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+Completed 200 OK in 502ms (Views: 0.2ms | ActiveRecord: 12.8ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-04-13 10:12:40 +0200
+Processing by Rails::WelcomeController#index as HTML
+  Parameters: {"internal"=>true}
+  Rendering /home/work/.rvm/gems/ruby-2.4.0/gems/railties-5.0.2/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /home/work/.rvm/gems/ruby-2.4.0/gems/railties-5.0.2/lib/rails/templates/rails/welcome/index.html.erb (3.0ms)
+Completed 200 OK in 16ms (Views: 15.8ms | ActiveRecord: 0.0ms)
+
+
+Started OPTIONS "/auth/validate_token" for 127.0.0.1 at 2017-04-13 10:12:44 +0200
+Started OPTIONS "/auth/sign_in" for 127.0.0.1 at 2017-04-13 10:12:44 +0200
+Started GET "/auth/validate_token" for 127.0.0.1 at 2017-04-13 10:12:44 +0200
+Processing by DeviseTokenAuth::TokenValidationsController#validate_token as JSON
+  Parameters: {"token_validation"=>{}}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."uid" = $1 LIMIT $2[0m  [["uid", "user@example.com"], ["LIMIT", 1]]
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-13 10:12:44 +0200
+Processing by DeviseTokenAuth::SessionsController#create as JSON
+  Parameters: {"email"=>"aaa@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"aaa@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (1.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'aaa@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Completed 401 Unauthorized in 85ms (Views: 0.2ms | ActiveRecord: 2.7ms)
+
+
+Completed 401 Unauthorized in 57ms (Views: 0.1ms | ActiveRecord: 1.4ms)
+
+
+Started GET "/auth/validate_token" for 127.0.0.1 at 2017-04-13 10:13:39 +0200
+Processing by DeviseTokenAuth::TokenValidationsController#validate_token as JSON
+  Parameters: {"token_validation"=>{}}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."uid" = $1 LIMIT $2[0m  [["uid", "user@example.com"], ["LIMIT", 1]]
+Completed 401 Unauthorized in 1ms (Views: 0.1ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-13 10:13:39 +0200
+Processing by DeviseTokenAuth::SessionsController#create as JSON
+  Parameters: {"email"=>"user@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"user@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'user@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[35m (1.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (5.7ms)[0m  [1m[33mUPDATE "users" SET "tokens" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["tokens", "{\"Y430Lur7SGlzud7eg-wdUA\":{\"token\":\"$2a$10$5K48fycFqMqOeQ9cy5QMo.Rbz/XJMgr4nj20Lum0GSt3o3WMwc.iy\",\"expiry\":1493280642,\"last_token\":\"$2a$10$nOjb0dGgyEEWGQFC4nyfWOfoVckfpUcbmmelOaUM9oBGhGfb4F4A.\",\"updated_at\":\"2017-04-13T10:10:42.289+02:00\"},\"U7-7ALX7ig3_nu62Em6Aaw\":{\"token\":\"$2a$10$b0flgw/n8aV0BacBQnkGJ.ZCS44I1BJACNU6aSLROdd682TYZ5YHe\",\"expiry\":1493280819}}"], ["updated_at", 2017-04-13 08:13:39 UTC], ["id", 1]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[33mUPDATE "users" SET "sign_in_count" = $1, "current_sign_in_at" = $2, "updated_at" = $3 WHERE "users"."id" = $4[0m  [["sign_in_count", 2], ["current_sign_in_at", 2017-04-13 08:13:39 UTC], ["updated_at", 2017-04-13 08:13:39 UTC], ["id", 1]]
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.9ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.9ms)[0m  [1m[37mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2 FOR UPDATE[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35mSQL (3.9ms)[0m  [1m[33mUPDATE "users" SET "tokens" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["tokens", "{\"Y430Lur7SGlzud7eg-wdUA\":{\"token\":\"$2a$10$5K48fycFqMqOeQ9cy5QMo.Rbz/XJMgr4nj20Lum0GSt3o3WMwc.iy\",\"expiry\":1493280642,\"last_token\":\"$2a$10$nOjb0dGgyEEWGQFC4nyfWOfoVckfpUcbmmelOaUM9oBGhGfb4F4A.\",\"updated_at\":\"2017-04-13T10:10:42.289+02:00\"},\"U7-7ALX7ig3_nu62Em6Aaw\":{\"token\":\"$2a$10$aXDkC4FGzaf1pIBYI4VLHuuf4MrxQ4v7EqHxwhyv7zHop/NuErAI2\",\"expiry\":1493280819,\"last_token\":\"$2a$10$b0flgw/n8aV0BacBQnkGJ.ZCS44I1BJACNU6aSLROdd682TYZ5YHe\",\"updated_at\":\"2017-04-13T10:13:39.625+02:00\"}}"], ["updated_at", 2017-04-13 08:13:39 UTC], ["id", 1]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+Completed 200 OK in 458ms (Views: 0.2ms | ActiveRecord: 15.4ms)
+
+
+Started GET "/auth/validate_token" for 127.0.0.1 at 2017-04-13 10:13:54 +0200
+Processing by DeviseTokenAuth::TokenValidationsController#validate_token as JSON
+  Parameters: {"token_validation"=>{}}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."uid" = $1 LIMIT $2[0m  [["uid", "user@example.com"], ["LIMIT", 1]]
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-13 10:13:54 +0200
+Processing by DeviseTokenAuth::SessionsController#create as JSON
+  Parameters: {"email"=>"user@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"user@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'user@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[35m (138.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (1.5ms)[0m  [1m[37mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2 FOR UPDATE[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35mSQL (4.0ms)[0m  [1m[33mUPDATE "users" SET "tokens" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["tokens", "{\"Y430Lur7SGlzud7eg-wdUA\":{\"token\":\"$2a$10$5K48fycFqMqOeQ9cy5QMo.Rbz/XJMgr4nj20Lum0GSt3o3WMwc.iy\",\"expiry\":1493280642,\"last_token\":\"$2a$10$nOjb0dGgyEEWGQFC4nyfWOfoVckfpUcbmmelOaUM9oBGhGfb4F4A.\",\"updated_at\":\"2017-04-13T10:10:42.289+02:00\"},\"U7-7ALX7ig3_nu62Em6Aaw\":{\"token\":\"$2a$10$6yuif7o/qtFY3hHzzDIaLeabIhXUin1qgJ2GO4eL8RYarQv6GQcGu\",\"expiry\":1493280834,\"last_token\":\"$2a$10$aXDkC4FGzaf1pIBYI4VLHuuf4MrxQ4v7EqHxwhyv7zHop/NuErAI2\",\"updated_at\":\"2017-04-13T10:13:54.900+02:00\"}}"], ["updated_at", 2017-04-13 08:13:54 UTC], ["id", 1]]
+  [1m[35m (6.9ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (16.6ms)[0m  [1m[35mCOMMIT[0m
+Completed 200 OK in 597ms (Views: 0.2ms | ActiveRecord: 160.6ms)
+
+
+  [1m[35mSQL (14.0ms)[0m  [1m[33mUPDATE "users" SET "tokens" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["tokens", "{\"Y430Lur7SGlzud7eg-wdUA\":{\"token\":\"$2a$10$5K48fycFqMqOeQ9cy5QMo.Rbz/XJMgr4nj20Lum0GSt3o3WMwc.iy\",\"expiry\":1493280642,\"last_token\":\"$2a$10$nOjb0dGgyEEWGQFC4nyfWOfoVckfpUcbmmelOaUM9oBGhGfb4F4A.\",\"updated_at\":\"2017-04-13T10:10:42.289+02:00\"},\"U7-7ALX7ig3_nu62Em6Aaw\":{\"token\":\"$2a$10$aXDkC4FGzaf1pIBYI4VLHuuf4MrxQ4v7EqHxwhyv7zHop/NuErAI2\",\"expiry\":1493280819,\"last_token\":\"$2a$10$b0flgw/n8aV0BacBQnkGJ.ZCS44I1BJACNU6aSLROdd682TYZ5YHe\",\"updated_at\":\"2017-04-13T10:13:39.625+02:00\"},\"hdoGfwABr4C5iafn2FGZsw\":{\"token\":\"$2a$10$AQyawh3oZH0O56f49AxRcOjbHYvZQ3VFZPIipIxoxIr5kXPvsguiO\",\"expiry\":1493280834}}"], ["updated_at", 2017-04-13 08:13:54 UTC], ["id", 1]]
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[33mUPDATE "users" SET "sign_in_count" = $1, "current_sign_in_at" = $2, "last_sign_in_at" = $3, "updated_at" = $4 WHERE "users"."id" = $5[0m  [["sign_in_count", 3], ["current_sign_in_at", 2017-04-13 08:13:54 UTC], ["last_sign_in_at", 2017-04-13 08:13:39 UTC], ["updated_at", 2017-04-13 08:13:54 UTC], ["id", 1]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (1.2ms)[0m  [1m[37mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2 FOR UPDATE[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35mSQL (3.6ms)[0m  [1m[33mUPDATE "users" SET "tokens" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["tokens", "{\"Y430Lur7SGlzud7eg-wdUA\":{\"token\":\"$2a$10$5K48fycFqMqOeQ9cy5QMo.Rbz/XJMgr4nj20Lum0GSt3o3WMwc.iy\",\"expiry\":1493280642,\"last_token\":\"$2a$10$nOjb0dGgyEEWGQFC4nyfWOfoVckfpUcbmmelOaUM9oBGhGfb4F4A.\",\"updated_at\":\"2017-04-13T10:10:42.289+02:00\"},\"U7-7ALX7ig3_nu62Em6Aaw\":{\"token\":\"$2a$10$aXDkC4FGzaf1pIBYI4VLHuuf4MrxQ4v7EqHxwhyv7zHop/NuErAI2\",\"expiry\":1493280819,\"last_token\":\"$2a$10$b0flgw/n8aV0BacBQnkGJ.ZCS44I1BJACNU6aSLROdd682TYZ5YHe\",\"updated_at\":\"2017-04-13T10:13:39.625+02:00\"},\"hdoGfwABr4C5iafn2FGZsw\":{\"token\":\"$2a$10$DXTbXfTx1AKgUCieGbSqbOJ78EKGa2NbCNRHxL83npMTwDZPAcBKy\",\"expiry\":1493280835,\"last_token\":\"$2a$10$AQyawh3oZH0O56f49AxRcOjbHYvZQ3VFZPIipIxoxIr5kXPvsguiO\",\"updated_at\":\"2017-04-13T10:13:55.120+02:00\"}}"], ["updated_at", 2017-04-13 08:13:55 UTC], ["id", 1]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+Completed 200 OK in 631ms (Views: 0.2ms | ActiveRecord: 29.6ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-13 10:14:04 +0200
+Processing by DeviseTokenAuth::SessionsController#create as */*
+  Parameters: {"email"=>"user@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"user@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'user@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.8ms)[0m  [1m[33mUPDATE "users" SET "tokens" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["tokens", "{\"Y430Lur7SGlzud7eg-wdUA\":{\"token\":\"$2a$10$5K48fycFqMqOeQ9cy5QMo.Rbz/XJMgr4nj20Lum0GSt3o3WMwc.iy\",\"expiry\":1493280642,\"last_token\":\"$2a$10$nOjb0dGgyEEWGQFC4nyfWOfoVckfpUcbmmelOaUM9oBGhGfb4F4A.\",\"updated_at\":\"2017-04-13T10:10:42.289+02:00\"},\"U7-7ALX7ig3_nu62Em6Aaw\":{\"token\":\"$2a$10$aXDkC4FGzaf1pIBYI4VLHuuf4MrxQ4v7EqHxwhyv7zHop/NuErAI2\",\"expiry\":1493280819,\"last_token\":\"$2a$10$b0flgw/n8aV0BacBQnkGJ.ZCS44I1BJACNU6aSLROdd682TYZ5YHe\",\"updated_at\":\"2017-04-13T10:13:39.625+02:00\"},\"hdoGfwABr4C5iafn2FGZsw\":{\"token\":\"$2a$10$DXTbXfTx1AKgUCieGbSqbOJ78EKGa2NbCNRHxL83npMTwDZPAcBKy\",\"expiry\":1493280835,\"last_token\":\"$2a$10$AQyawh3oZH0O56f49AxRcOjbHYvZQ3VFZPIipIxoxIr5kXPvsguiO\",\"updated_at\":\"2017-04-13T10:13:55.120+02:00\"},\"XOf0bAqja5VyWNsBMls_vw\":{\"token\":\"$2a$10$O2OptG.n5jLrYqWh3EFdPOV30T2XUI3ookDAkheycoIm5v8NgKpQa\",\"expiry\":1493280844}}"], ["updated_at", 2017-04-13 08:14:04 UTC], ["id", 1]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.9ms)[0m  [1m[33mUPDATE "users" SET "sign_in_count" = $1, "current_sign_in_at" = $2, "last_sign_in_at" = $3, "updated_at" = $4 WHERE "users"."id" = $5[0m  [["sign_in_count", 4], ["current_sign_in_at", 2017-04-13 08:14:04 UTC], ["last_sign_in_at", 2017-04-13 08:13:54 UTC], ["updated_at", 2017-04-13 08:14:04 UTC], ["id", 1]]
+  [1m[35m (25.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.4ms)[0m  [1m[37mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2 FOR UPDATE[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35mSQL (0.4ms)[0m  [1m[33mUPDATE "users" SET "tokens" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["tokens", "{\"Y430Lur7SGlzud7eg-wdUA\":{\"token\":\"$2a$10$5K48fycFqMqOeQ9cy5QMo.Rbz/XJMgr4nj20Lum0GSt3o3WMwc.iy\",\"expiry\":1493280642,\"last_token\":\"$2a$10$nOjb0dGgyEEWGQFC4nyfWOfoVckfpUcbmmelOaUM9oBGhGfb4F4A.\",\"updated_at\":\"2017-04-13T10:10:42.289+02:00\"},\"U7-7ALX7ig3_nu62Em6Aaw\":{\"token\":\"$2a$10$aXDkC4FGzaf1pIBYI4VLHuuf4MrxQ4v7EqHxwhyv7zHop/NuErAI2\",\"expiry\":1493280819,\"last_token\":\"$2a$10$b0flgw/n8aV0BacBQnkGJ.ZCS44I1BJACNU6aSLROdd682TYZ5YHe\",\"updated_at\":\"2017-04-13T10:13:39.625+02:00\"},\"hdoGfwABr4C5iafn2FGZsw\":{\"token\":\"$2a$10$DXTbXfTx1AKgUCieGbSqbOJ78EKGa2NbCNRHxL83npMTwDZPAcBKy\",\"expiry\":1493280835,\"last_token\":\"$2a$10$AQyawh3oZH0O56f49AxRcOjbHYvZQ3VFZPIipIxoxIr5kXPvsguiO\",\"updated_at\":\"2017-04-13T10:13:55.120+02:00\"},\"XOf0bAqja5VyWNsBMls_vw\":{\"token\":\"$2a$10$e8J050vDVXhtVWq/Y8oSnuzFX4cZgpWYJL1eWgQWDu6.zuuZrc4Me\",\"expiry\":1493280844,\"last_token\":\"$2a$10$O2OptG.n5jLrYqWh3EFdPOV30T2XUI3ookDAkheycoIm5v8NgKpQa\",\"updated_at\":\"2017-04-13T10:14:04.582+02:00\"}}"], ["updated_at", 2017-04-13 08:14:04 UTC], ["id", 1]]
+  [1m[35m (2.1ms)[0m  [1m[35mCOMMIT[0m
+Completed 200 OK in 399ms (Views: 0.2ms | ActiveRecord: 35.2ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-13 10:14:06 +0200
+Processing by DeviseTokenAuth::SessionsController#create as */*
+  Parameters: {"email"=>"user@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"user@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'user@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[33mUPDATE "users" SET "tokens" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["tokens", "{\"Y430Lur7SGlzud7eg-wdUA\":{\"token\":\"$2a$10$5K48fycFqMqOeQ9cy5QMo.Rbz/XJMgr4nj20Lum0GSt3o3WMwc.iy\",\"expiry\":1493280642,\"last_token\":\"$2a$10$nOjb0dGgyEEWGQFC4nyfWOfoVckfpUcbmmelOaUM9oBGhGfb4F4A.\",\"updated_at\":\"2017-04-13T10:10:42.289+02:00\"},\"U7-7ALX7ig3_nu62Em6Aaw\":{\"token\":\"$2a$10$aXDkC4FGzaf1pIBYI4VLHuuf4MrxQ4v7EqHxwhyv7zHop/NuErAI2\",\"expiry\":1493280819,\"last_token\":\"$2a$10$b0flgw/n8aV0BacBQnkGJ.ZCS44I1BJACNU6aSLROdd682TYZ5YHe\",\"updated_at\":\"2017-04-13T10:13:39.625+02:00\"},\"hdoGfwABr4C5iafn2FGZsw\":{\"token\":\"$2a$10$DXTbXfTx1AKgUCieGbSqbOJ78EKGa2NbCNRHxL83npMTwDZPAcBKy\",\"expiry\":1493280835,\"last_token\":\"$2a$10$AQyawh3oZH0O56f49AxRcOjbHYvZQ3VFZPIipIxoxIr5kXPvsguiO\",\"updated_at\":\"2017-04-13T10:13:55.120+02:00\"},\"XOf0bAqja5VyWNsBMls_vw\":{\"token\":\"$2a$10$e8J050vDVXhtVWq/Y8oSnuzFX4cZgpWYJL1eWgQWDu6.zuuZrc4Me\",\"expiry\":1493280844,\"last_token\":\"$2a$10$O2OptG.n5jLrYqWh3EFdPOV30T2XUI3ookDAkheycoIm5v8NgKpQa\",\"updated_at\":\"2017-04-13T10:14:04.582+02:00\"},\"jqw7lp940aVgfuAHraitrQ\":{\"token\":\"$2a$10$izHTOle7HtpY/LOL/MuzweHk8UInQRwmrr.PgA4NqKGPp7YwZavae\",\"expiry\":1493280846}}"], ["updated_at", 2017-04-13 08:14:06 UTC], ["id", 1]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (4.2ms)[0m  [1m[33mUPDATE "users" SET "sign_in_count" = $1, "current_sign_in_at" = $2, "last_sign_in_at" = $3, "updated_at" = $4 WHERE "users"."id" = $5[0m  [["sign_in_count", 5], ["current_sign_in_at", 2017-04-13 08:14:06 UTC], ["last_sign_in_at", 2017-04-13 08:14:04 UTC], ["updated_at", 2017-04-13 08:14:06 UTC], ["id", 1]]
+  [1m[35m (15.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.4ms)[0m  [1m[37mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2 FOR UPDATE[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35mSQL (0.4ms)[0m  [1m[33mUPDATE "users" SET "tokens" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["tokens", "{\"Y430Lur7SGlzud7eg-wdUA\":{\"token\":\"$2a$10$5K48fycFqMqOeQ9cy5QMo.Rbz/XJMgr4nj20Lum0GSt3o3WMwc.iy\",\"expiry\":1493280642,\"last_token\":\"$2a$10$nOjb0dGgyEEWGQFC4nyfWOfoVckfpUcbmmelOaUM9oBGhGfb4F4A.\",\"updated_at\":\"2017-04-13T10:10:42.289+02:00\"},\"U7-7ALX7ig3_nu62Em6Aaw\":{\"token\":\"$2a$10$aXDkC4FGzaf1pIBYI4VLHuuf4MrxQ4v7EqHxwhyv7zHop/NuErAI2\",\"expiry\":1493280819,\"last_token\":\"$2a$10$b0flgw/n8aV0BacBQnkGJ.ZCS44I1BJACNU6aSLROdd682TYZ5YHe\",\"updated_at\":\"2017-04-13T10:13:39.625+02:00\"},\"hdoGfwABr4C5iafn2FGZsw\":{\"token\":\"$2a$10$DXTbXfTx1AKgUCieGbSqbOJ78EKGa2NbCNRHxL83npMTwDZPAcBKy\",\"expiry\":1493280835,\"last_token\":\"$2a$10$AQyawh3oZH0O56f49AxRcOjbHYvZQ3VFZPIipIxoxIr5kXPvsguiO\",\"updated_at\":\"2017-04-13T10:13:55.120+02:00\"},\"XOf0bAqja5VyWNsBMls_vw\":{\"token\":\"$2a$10$e8J050vDVXhtVWq/Y8oSnuzFX4cZgpWYJL1eWgQWDu6.zuuZrc4Me\",\"expiry\":1493280844,\"last_token\":\"$2a$10$O2OptG.n5jLrYqWh3EFdPOV30T2XUI3ookDAkheycoIm5v8NgKpQa\",\"updated_at\":\"2017-04-13T10:14:04.582+02:00\"},\"jqw7lp940aVgfuAHraitrQ\":{\"token\":\"$2a$10$s8WgSnadLycHfmyJHJD64uHhuhlKsTFLHWNm8.s2KWtulokAcvLdy\",\"expiry\":1493280846,\"last_token\":\"$2a$10$izHTOle7HtpY/LOL/MuzweHk8UInQRwmrr.PgA4NqKGPp7YwZavae\",\"updated_at\":\"2017-04-13T10:14:06.716+02:00\"}}"], ["updated_at", 2017-04-13 08:14:06 UTC], ["id", 1]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+Completed 200 OK in 349ms (Views: 0.2ms | ActiveRecord: 23.5ms)
+
+
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-13 10:18:55 +0200
+  [1m[36mActiveRecord::SchemaMigration Load (2.5ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by DeviseTokenAuth::SessionsController#create as */*
+  Parameters: {"email"=>"user@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"user@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (3.1ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'user@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[35m (6.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[33mUPDATE "users" SET "tokens" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["tokens", "{\"Y430Lur7SGlzud7eg-wdUA\":{\"token\":\"$2a$10$5K48fycFqMqOeQ9cy5QMo.Rbz/XJMgr4nj20Lum0GSt3o3WMwc.iy\",\"expiry\":1493280642,\"last_token\":\"$2a$10$nOjb0dGgyEEWGQFC4nyfWOfoVckfpUcbmmelOaUM9oBGhGfb4F4A.\",\"updated_at\":\"2017-04-13T10:10:42.289+02:00\"},\"U7-7ALX7ig3_nu62Em6Aaw\":{\"token\":\"$2a$10$aXDkC4FGzaf1pIBYI4VLHuuf4MrxQ4v7EqHxwhyv7zHop/NuErAI2\",\"expiry\":1493280819,\"last_token\":\"$2a$10$b0flgw/n8aV0BacBQnkGJ.ZCS44I1BJACNU6aSLROdd682TYZ5YHe\",\"updated_at\":\"2017-04-13T10:13:39.625+02:00\"},\"hdoGfwABr4C5iafn2FGZsw\":{\"token\":\"$2a$10$DXTbXfTx1AKgUCieGbSqbOJ78EKGa2NbCNRHxL83npMTwDZPAcBKy\",\"expiry\":1493280835,\"last_token\":\"$2a$10$AQyawh3oZH0O56f49AxRcOjbHYvZQ3VFZPIipIxoxIr5kXPvsguiO\",\"updated_at\":\"2017-04-13T10:13:55.120+02:00\"},\"XOf0bAqja5VyWNsBMls_vw\":{\"token\":\"$2a$10$e8J050vDVXhtVWq/Y8oSnuzFX4cZgpWYJL1eWgQWDu6.zuuZrc4Me\",\"expiry\":1493280844,\"last_token\":\"$2a$10$O2OptG.n5jLrYqWh3EFdPOV30T2XUI3ookDAkheycoIm5v8NgKpQa\",\"updated_at\":\"2017-04-13T10:14:04.582+02:00\"},\"jqw7lp940aVgfuAHraitrQ\":{\"token\":\"$2a$10$s8WgSnadLycHfmyJHJD64uHhuhlKsTFLHWNm8.s2KWtulokAcvLdy\",\"expiry\":1493280846,\"last_token\":\"$2a$10$izHTOle7HtpY/LOL/MuzweHk8UInQRwmrr.PgA4NqKGPp7YwZavae\",\"updated_at\":\"2017-04-13T10:14:06.716+02:00\"},\"hm4uLNkSQHYIt5x5hPIDpA\":{\"token\":\"$2a$10$C.V0Iq5IFMgQucnBqpZYsucP3f434wXNHZ0f3pnyq3BCWGYnghOl2\",\"expiry\":1493281135}}"], ["updated_at", 2017-04-13 08:18:55 UTC], ["id", 1]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.2ms)[0m  [1m[33mUPDATE "users" SET "sign_in_count" = $1, "current_sign_in_at" = $2, "last_sign_in_at" = $3, "updated_at" = $4 WHERE "users"."id" = $5[0m  [["sign_in_count", 6], ["current_sign_in_at", 2017-04-13 08:18:55 UTC], ["last_sign_in_at", 2017-04-13 08:14:06 UTC], ["updated_at", 2017-04-13 08:18:55 UTC], ["id", 1]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.4ms)[0m  [1m[37mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2 FOR UPDATE[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35mSQL (5.4ms)[0m  [1m[33mUPDATE "users" SET "tokens" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["tokens", "{\"Y430Lur7SGlzud7eg-wdUA\":{\"token\":\"$2a$10$5K48fycFqMqOeQ9cy5QMo.Rbz/XJMgr4nj20Lum0GSt3o3WMwc.iy\",\"expiry\":1493280642,\"last_token\":\"$2a$10$nOjb0dGgyEEWGQFC4nyfWOfoVckfpUcbmmelOaUM9oBGhGfb4F4A.\",\"updated_at\":\"2017-04-13T10:10:42.289+02:00\"},\"U7-7ALX7ig3_nu62Em6Aaw\":{\"token\":\"$2a$10$aXDkC4FGzaf1pIBYI4VLHuuf4MrxQ4v7EqHxwhyv7zHop/NuErAI2\",\"expiry\":1493280819,\"last_token\":\"$2a$10$b0flgw/n8aV0BacBQnkGJ.ZCS44I1BJACNU6aSLROdd682TYZ5YHe\",\"updated_at\":\"2017-04-13T10:13:39.625+02:00\"},\"hdoGfwABr4C5iafn2FGZsw\":{\"token\":\"$2a$10$DXTbXfTx1AKgUCieGbSqbOJ78EKGa2NbCNRHxL83npMTwDZPAcBKy\",\"expiry\":1493280835,\"last_token\":\"$2a$10$AQyawh3oZH0O56f49AxRcOjbHYvZQ3VFZPIipIxoxIr5kXPvsguiO\",\"updated_at\":\"2017-04-13T10:13:55.120+02:00\"},\"XOf0bAqja5VyWNsBMls_vw\":{\"token\":\"$2a$10$e8J050vDVXhtVWq/Y8oSnuzFX4cZgpWYJL1eWgQWDu6.zuuZrc4Me\",\"expiry\":1493280844,\"last_token\":\"$2a$10$O2OptG.n5jLrYqWh3EFdPOV30T2XUI3ookDAkheycoIm5v8NgKpQa\",\"updated_at\":\"2017-04-13T10:14:04.582+02:00\"},\"jqw7lp940aVgfuAHraitrQ\":{\"token\":\"$2a$10$s8WgSnadLycHfmyJHJD64uHhuhlKsTFLHWNm8.s2KWtulokAcvLdy\",\"expiry\":1493280846,\"last_token\":\"$2a$10$izHTOle7HtpY/LOL/MuzweHk8UInQRwmrr.PgA4NqKGPp7YwZavae\",\"updated_at\":\"2017-04-13T10:14:06.716+02:00\"},\"hm4uLNkSQHYIt5x5hPIDpA\":{\"token\":\"$2a$10$VihnOq1YwK2yfglFGfU6aOqa.iazYQzG43LWL4zFndE5d.ys6yf.C\",\"expiry\":1493281135,\"last_token\":\"$2a$10$C.V0Iq5IFMgQucnBqpZYsucP3f434wXNHZ0f3pnyq3BCWGYnghOl2\",\"updated_at\":\"2017-04-13T10:18:55.913+02:00\"}}"], ["updated_at", 2017-04-13 08:18:55 UTC], ["id", 1]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+Completed 200 OK in 515ms (Views: 0.2ms | ActiveRecord: 22.6ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-04-13 10:19:48 +0200
+Processing by Rails::WelcomeController#index as HTML
+  Parameters: {"internal"=>true}
+  Rendering /home/work/.rvm/gems/ruby-2.4.0/gems/railties-5.0.2/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /home/work/.rvm/gems/ruby-2.4.0/gems/railties-5.0.2/lib/rails/templates/rails/welcome/index.html.erb (2.0ms)
+Completed 200 OK in 11ms (Views: 10.6ms | ActiveRecord: 0.0ms)
+
+
+Started OPTIONS "/auth/validate_token" for 127.0.0.1 at 2017-04-13 10:19:51 +0200
+Started OPTIONS "/auth/sign_in" for 127.0.0.1 at 2017-04-13 10:19:51 +0200
+Started GET "/auth/validate_token" for 127.0.0.1 at 2017-04-13 10:19:51 +0200
+Processing by DeviseTokenAuth::TokenValidationsController#validate_token as JSON
+  Parameters: {"token_validation"=>{}}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."uid" = $1 LIMIT $2[0m  [["uid", "user@example.com"], ["LIMIT", 1]]
+Started POST "/auth/sign_in" for 127.0.0.1 at 2017-04-13 10:19:51 +0200
+  [1m[35m (7.9ms)[0m  [1m[35mBEGIN[0m
+Processing by DeviseTokenAuth::SessionsController#create as JSON
+  Parameters: {"email"=>"user@example.com", "password"=>"[FILTERED]", "session"=>{"email"=>"user@example.com", "password"=>"[FILTERED]"}}
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[36mUser Load (4.6ms)[0m  [1m[37mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2 FOR UPDATE[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mUser Load (166.6ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE (email = 'user@example.com' AND provider='email') ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Unpermitted parameter: session
+Unpermitted parameter: session
+  [1m[35mSQL (141.8ms)[0m  [1m[33mUPDATE "users" SET "tokens" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["tokens", "{\"Y430Lur7SGlzud7eg-wdUA\":{\"token\":\"$2a$10$5K48fycFqMqOeQ9cy5QMo.Rbz/XJMgr4nj20Lum0GSt3o3WMwc.iy\",\"expiry\":1493280642,\"last_token\":\"$2a$10$nOjb0dGgyEEWGQFC4nyfWOfoVckfpUcbmmelOaUM9oBGhGfb4F4A.\",\"updated_at\":\"2017-04-13T10:10:42.289+02:00\"},\"U7-7ALX7ig3_nu62Em6Aaw\":{\"token\":\"$2a$10$aXDkC4FGzaf1pIBYI4VLHuuf4MrxQ4v7EqHxwhyv7zHop/NuErAI2\",\"expiry\":1493280819,\"last_token\":\"$2a$10$b0flgw/n8aV0BacBQnkGJ.ZCS44I1BJACNU6aSLROdd682TYZ5YHe\",\"updated_at\":\"2017-04-13T10:13:39.625+02:00\"},\"hdoGfwABr4C5iafn2FGZsw\":{\"token\":\"$2a$10$uUo1gebn16kfNAFLiIXSYuLojUmrRwSRh04iRPNNl2Jcig3VZbB0e\",\"expiry\":1493281192,\"last_token\":\"$2a$10$DXTbXfTx1AKgUCieGbSqbOJ78EKGa2NbCNRHxL83npMTwDZPAcBKy\",\"updated_at\":\"2017-04-13T10:19:52.315+02:00\"},\"XOf0bAqja5VyWNsBMls_vw\":{\"token\":\"$2a$10$e8J050vDVXhtVWq/Y8oSnuzFX4cZgpWYJL1eWgQWDu6.zuuZrc4Me\",\"expiry\":1493280844,\"last_token\":\"$2a$10$O2OptG.n5jLrYqWh3EFdPOV30T2XUI3ookDAkheycoIm5v8NgKpQa\",\"updated_at\":\"2017-04-13T10:14:04.582+02:00\"},\"jqw7lp940aVgfuAHraitrQ\":{\"token\":\"$2a$10$s8WgSnadLycHfmyJHJD64uHhuhlKsTFLHWNm8.s2KWtulokAcvLdy\",\"expiry\":1493280846,\"last_token\":\"$2a$10$izHTOle7HtpY/LOL/MuzweHk8UInQRwmrr.PgA4NqKGPp7YwZavae\",\"updated_at\":\"2017-04-13T10:14:06.716+02:00\"},\"hm4uLNkSQHYIt5x5hPIDpA\":{\"token\":\"$2a$10$VihnOq1YwK2yfglFGfU6aOqa.iazYQzG43LWL4zFndE5d.ys6yf.C\",\"expiry\":1493281135,\"last_token\":\"$2a$10$C.V0Iq5IFMgQucnBqpZYsucP3f434wXNHZ0f3pnyq3BCWGYnghOl2\",\"updated_at\":\"2017-04-13T10:18:55.913+02:00\"}}"], ["updated_at", 2017-04-13 08:19:52 UTC], ["id", 1]]
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (6.8ms)[0m  [1m[35mCOMMIT[0m
+Completed 200 OK in 649ms (Views: 0.2ms | ActiveRecord: 162.3ms)
+
+
+  [1m[35mSQL (4.1ms)[0m  [1m[33mUPDATE "users" SET "tokens" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["tokens", "{\"Y430Lur7SGlzud7eg-wdUA\":{\"token\":\"$2a$10$5K48fycFqMqOeQ9cy5QMo.Rbz/XJMgr4nj20Lum0GSt3o3WMwc.iy\",\"expiry\":1493280642,\"last_token\":\"$2a$10$nOjb0dGgyEEWGQFC4nyfWOfoVckfpUcbmmelOaUM9oBGhGfb4F4A.\",\"updated_at\":\"2017-04-13T10:10:42.289+02:00\"},\"U7-7ALX7ig3_nu62Em6Aaw\":{\"token\":\"$2a$10$aXDkC4FGzaf1pIBYI4VLHuuf4MrxQ4v7EqHxwhyv7zHop/NuErAI2\",\"expiry\":1493280819,\"last_token\":\"$2a$10$b0flgw/n8aV0BacBQnkGJ.ZCS44I1BJACNU6aSLROdd682TYZ5YHe\",\"updated_at\":\"2017-04-13T10:13:39.625+02:00\"},\"hdoGfwABr4C5iafn2FGZsw\":{\"token\":\"$2a$10$DXTbXfTx1AKgUCieGbSqbOJ78EKGa2NbCNRHxL83npMTwDZPAcBKy\",\"expiry\":1493280835,\"last_token\":\"$2a$10$AQyawh3oZH0O56f49AxRcOjbHYvZQ3VFZPIipIxoxIr5kXPvsguiO\",\"updated_at\":\"2017-04-13T10:13:55.120+02:00\"},\"XOf0bAqja5VyWNsBMls_vw\":{\"token\":\"$2a$10$e8J050vDVXhtVWq/Y8oSnuzFX4cZgpWYJL1eWgQWDu6.zuuZrc4Me\",\"expiry\":1493280844,\"last_token\":\"$2a$10$O2OptG.n5jLrYqWh3EFdPOV30T2XUI3ookDAkheycoIm5v8NgKpQa\",\"updated_at\":\"2017-04-13T10:14:04.582+02:00\"},\"jqw7lp940aVgfuAHraitrQ\":{\"token\":\"$2a$10$s8WgSnadLycHfmyJHJD64uHhuhlKsTFLHWNm8.s2KWtulokAcvLdy\",\"expiry\":1493280846,\"last_token\":\"$2a$10$izHTOle7HtpY/LOL/MuzweHk8UInQRwmrr.PgA4NqKGPp7YwZavae\",\"updated_at\":\"2017-04-13T10:14:06.716+02:00\"},\"hm4uLNkSQHYIt5x5hPIDpA\":{\"token\":\"$2a$10$VihnOq1YwK2yfglFGfU6aOqa.iazYQzG43LWL4zFndE5d.ys6yf.C\",\"expiry\":1493281135,\"last_token\":\"$2a$10$C.V0Iq5IFMgQucnBqpZYsucP3f434wXNHZ0f3pnyq3BCWGYnghOl2\",\"updated_at\":\"2017-04-13T10:18:55.913+02:00\"},\"Mm3OnfjRQIIWa5Hi4SBaIg\":{\"token\":\"$2a$10$8t8G16ZjuVc2FxW8/nsj4.nOYVuevA6rLY5SLa3nNIEOHS.2Yf8kG\",\"expiry\":1493281192}}"], ["updated_at", 2017-04-13 08:19:52 UTC], ["id", 1]]
+  [1m[35m (19.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[33mUPDATE "users" SET "sign_in_count" = $1, "current_sign_in_at" = $2, "last_sign_in_at" = $3, "updated_at" = $4 WHERE "users"."id" = $5[0m  [["sign_in_count", 7], ["current_sign_in_at", 2017-04-13 08:19:52 UTC], ["last_sign_in_at", 2017-04-13 08:18:55 UTC], ["updated_at", 2017-04-13 08:19:52 UTC], ["id", 1]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[37mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2 FOR UPDATE[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35mSQL (0.4ms)[0m  [1m[33mUPDATE "users" SET "tokens" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["tokens", "{\"Y430Lur7SGlzud7eg-wdUA\":{\"token\":\"$2a$10$5K48fycFqMqOeQ9cy5QMo.Rbz/XJMgr4nj20Lum0GSt3o3WMwc.iy\",\"expiry\":1493280642,\"last_token\":\"$2a$10$nOjb0dGgyEEWGQFC4nyfWOfoVckfpUcbmmelOaUM9oBGhGfb4F4A.\",\"updated_at\":\"2017-04-13T10:10:42.289+02:00\"},\"U7-7ALX7ig3_nu62Em6Aaw\":{\"token\":\"$2a$10$aXDkC4FGzaf1pIBYI4VLHuuf4MrxQ4v7EqHxwhyv7zHop/NuErAI2\",\"expiry\":1493280819,\"last_token\":\"$2a$10$b0flgw/n8aV0BacBQnkGJ.ZCS44I1BJACNU6aSLROdd682TYZ5YHe\",\"updated_at\":\"2017-04-13T10:13:39.625+02:00\"},\"hdoGfwABr4C5iafn2FGZsw\":{\"token\":\"$2a$10$DXTbXfTx1AKgUCieGbSqbOJ78EKGa2NbCNRHxL83npMTwDZPAcBKy\",\"expiry\":1493280835,\"last_token\":\"$2a$10$AQyawh3oZH0O56f49AxRcOjbHYvZQ3VFZPIipIxoxIr5kXPvsguiO\",\"updated_at\":\"2017-04-13T10:13:55.120+02:00\"},\"XOf0bAqja5VyWNsBMls_vw\":{\"token\":\"$2a$10$e8J050vDVXhtVWq/Y8oSnuzFX4cZgpWYJL1eWgQWDu6.zuuZrc4Me\",\"expiry\":1493280844,\"last_token\":\"$2a$10$O2OptG.n5jLrYqWh3EFdPOV30T2XUI3ookDAkheycoIm5v8NgKpQa\",\"updated_at\":\"2017-04-13T10:14:04.582+02:00\"},\"jqw7lp940aVgfuAHraitrQ\":{\"token\":\"$2a$10$s8WgSnadLycHfmyJHJD64uHhuhlKsTFLHWNm8.s2KWtulokAcvLdy\",\"expiry\":1493280846,\"last_token\":\"$2a$10$izHTOle7HtpY/LOL/MuzweHk8UInQRwmrr.PgA4NqKGPp7YwZavae\",\"updated_at\":\"2017-04-13T10:14:06.716+02:00\"},\"hm4uLNkSQHYIt5x5hPIDpA\":{\"token\":\"$2a$10$VihnOq1YwK2yfglFGfU6aOqa.iazYQzG43LWL4zFndE5d.ys6yf.C\",\"expiry\":1493281135,\"last_token\":\"$2a$10$C.V0Iq5IFMgQucnBqpZYsucP3f434wXNHZ0f3pnyq3BCWGYnghOl2\",\"updated_at\":\"2017-04-13T10:18:55.913+02:00\"},\"Mm3OnfjRQIIWa5Hi4SBaIg\":{\"token\":\"$2a$10$oy9Cwf4/L3.2NnOTmyl0ze1zsI9t3pg7KWJgmX9cDHLLgSzXtR7.i\",\"expiry\":1493281192,\"last_token\":\"$2a$10$8t8G16ZjuVc2FxW8/nsj4.nOYVuevA6rLY5SLa3nNIEOHS.2Yf8kG\",\"updated_at\":\"2017-04-13T10:19:52.580+02:00\"}}"], ["updated_at", 2017-04-13 08:19:52 UTC], ["id", 1]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+Completed 200 OK in 589ms (Views: 0.2ms | ActiveRecord: 194.4ms)
+
+
